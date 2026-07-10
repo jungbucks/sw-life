@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어와 생활 4단원 — 모의 실험하는 소프트웨어</title>
+<style>
+/* ==========================================================
+   소프트웨어와 생활 시리즈 공통 (DESIGN_SPEC.md) — 4단원: 로즈
+   ========================================================== */
+:root {
+  /* 단원 액센트 — 4단원 로즈 */
+  --ua: #DB2777;
+  --ua-dark: #BE185D;
+  --ua-soft: #FDEEF5;
+  /* 중립 (웜 아이보리 무드) */
+  --bg: #FBFAF6;
+  --card: #FFFFFF;
+  --ink: #292524;
+  --muted: #6B6459;
+  --line: #EAE6DE;
+  /* 시리즈 5색 (고정 순서 — DESIGN_SPEC 검증 완료) */
+  --c1: #0D9488; --c2: #EA580C; --c3: #2563EB; --c4: #DB2777; --c5: #16A34A;
+  /* 시맨틱 */
+  --ok: #0E9F6E; --bad: #DC2626;
+  --radius: 18px;
+  --shadow: 0 3px 16px rgba(41, 37, 36, .07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink);
+  line-height: 1.75; font-size: 16.5px;
+}
+button:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid var(--ua); outline-offset: 2px; }
+
+/* ---------- 헤더: 회로 배선 모티프 ---------- */
+header {
+  position: relative; text-align: center;
+  padding: 56px 20px 34px; overflow: hidden;
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+header::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--c1), var(--c1)) 6% 26% / 120px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c1) 98%, transparent) 3.5% 25% / 10px 10px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 88% 34% / 100px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c2) 98%, transparent) 95.5% 33% / 10px 10px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 10% 74% / 90px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c3) 98%, transparent) 17% 73% / 10px 10px no-repeat,
+    linear-gradient(var(--c4), var(--c4)) 90% 78% / 110px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c4) 98%, transparent) 83.5% 77% / 10px 10px no-repeat,
+    linear-gradient(var(--c5), var(--c5)) 50% 12% / 80px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c5) 98%, transparent) 54% 11% / 10px 10px no-repeat;
+  opacity: .3;
+}
+.unit-badge {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .1em;
+  color: var(--ua-dark); background: var(--ua-soft); border: 1px solid var(--ua);
+  padding: 5px 16px; border-radius: 99px; margin-bottom: 16px;
+}
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.25; }
+h1 .ua { color: var(--ua-dark); }
+.sub { color: var(--muted); margin-top: 10px; font-size: 17px; }
+
+/* ---------- 미니 목차 ---------- */
+nav.toc {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  padding: 14px 20px; background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+}
+nav.toc a {
+  font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none;
+  padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--line);
+  transition: color .15s, border-color .15s, background .15s;
+}
+nav.toc a:hover { color: var(--ua-dark); border-color: var(--ua); background: var(--ua-soft); }
+
+/* ---------- 본문 & 카드 ---------- */
+main { max-width: 940px; margin: 0 auto; padding: 30px 20px 80px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 30px 30px 26px; margin-bottom: 26px;
+  scroll-margin-top: 70px;
+}
+h2 { font-size: 24px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+h2 .chip { font-size: 12px; font-weight: 800; color: #fff; background: var(--ua); border-radius: 8px; padding: 3px 10px; flex-shrink: 0; }
+h3 { font-size: 18px; font-weight: 800; margin: 26px 0 8px; }
+h3::before { content: '🧪 '; }
+p { margin: 8px 0; }
+.lead { color: var(--muted); font-size: 15.5px; margin-bottom: 12px; }
+strong { font-weight: 800; }
+mark { background: linear-gradient(transparent 55%, #F9CBDF 55%); color: inherit; padding: 0 2px; font-weight: 700; }
+ul.list, ol.list { padding-left: 24px; margin: 8px 0; }
+ul.list li, ol.list li { margin: 5px 0; }
+
+.tip, .warn { border-radius: 14px; padding: 15px 20px; margin: 16px 0; font-size: 15.5px; border: 1.5px solid; }
+.tip { background: var(--ua-soft); border-color: var(--ua); }
+.warn { background: #FDF2F2; border-color: #F5C0C0; }
+.tip .t, .warn .t { font-weight: 900; display: block; margin-bottom: 4px; }
+.tip .t { color: var(--ua-dark); }
+.warn .t { color: var(--bad); }
+
+/* ---------- 표 ---------- */
+.tbl-wrap { overflow-x: auto; margin: 14px 0; border-radius: 12px; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 480px; background: #fff; font-size: 15px; }
+th { background: var(--ink); color: #fff; font-weight: 800; padding: 10px 14px; text-align: left; font-size: 14px; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+
+/* ---------- 흐름 필 ---------- */
+.flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 14px 0; }
+.flow .f-step { background: var(--ua-soft); border: 1.5px solid var(--ua); color: var(--ua-dark); font-weight: 800; font-size: 14.5px; border-radius: 99px; padding: 8px 18px; }
+.flow .f-arrow { color: var(--muted); font-weight: 900; }
+
+/* ---------- 사례 카드 ---------- */
+.fusion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin: 14px 0; }
+.fusion { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.fusion .f-ico { font-size: 24px; margin-bottom: 6px; }
+.fusion h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.fusion p { font-size: 13.5px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+/* ---------- 데모 공통 ---------- */
+.demo { background: #F6F4EE; border: 2px dashed #D8D2C6; border-radius: 16px; padding: 22px; margin: 18px 0; }
+.demo-title { font-weight: 900; font-size: 15px; margin-bottom: 12px; }
+.badge-live {
+  font-size: 11px; color: #fff; background: var(--ua);
+  border-radius: 99px; padding: 2px 9px; margin-left: 6px; vertical-align: 2px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.btn {
+  font-family: inherit; font-size: 14.5px; font-weight: 800;
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  border: none; color: #fff; background: var(--ua);
+  box-shadow: 0 3px 10px rgba(219, 39, 119, .3);
+  transition: transform .15s, filter .15s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn.ghost { background: #fff; color: var(--ink); border: 2px solid var(--line); box-shadow: none; }
+.btn.ghost.on { border-color: var(--ua); color: var(--ua-dark); background: var(--ua-soft); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.demo-note {
+  margin-top: 14px; font-size: 15px; font-weight: 600;
+  background: #fff; border-radius: 12px; padding: 12px 16px;
+  border-left: 4px solid var(--ua); min-height: 46px;
+}
+
+/* ---------- 시뮬레이터 ---------- */
+#simCanvas { display: block; width: 100%; height: 260px; background: #fff; border: 2px solid var(--line); border-radius: 12px; margin-top: 12px; }
+.sim-hud { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 14px; font-weight: 800; margin-top: 10px; }
+.sim-hud .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+.sim-hud .peak { margin-left: auto; color: var(--ua-dark); }
+.rm-note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* ---------- 활동 박스 ---------- */
+.activity {
+  background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 14px;
+  padding: 18px 22px; margin: 18px 0;
+}
+.activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
+.activity p { font-size: 15.5px; margin: 4px 0; }
+.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+
+footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
+footer .series { font-weight: 800; color: var(--ua-dark); }
+
+/* ---------- 퀴즈 (시리즈 공통 엔진) ---------- */
+details.acc { border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); margin-bottom: 18px; overflow: hidden; }
+details.acc summary { cursor: pointer; list-style: none; padding: 20px 26px; font-weight: 900; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '▼'; margin-left: auto; font-size: 12px; color: var(--ua); transition: transform .25s; }
+details.acc[open] summary::after { transform: rotate(180deg); }
+details.acc summary:hover { background: var(--ua-soft); }
+details.acc .acc-body { padding: 4px 26px 26px; }
+.q-item { margin-bottom: 24px; }
+.q-text { font-weight: 800; margin-bottom: 10px; }
+.q-text .qnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; background: var(--ua); color: #fff; font-size: 13px; font-weight: 900; }
+.q-opts { display: grid; gap: 8px; }
+.q-opt { font-family: inherit; text-align: left; font-size: 15px; font-weight: 600; padding: 11px 16px; border-radius: 12px; cursor: pointer; border: 2px solid var(--line); background: #fff; color: var(--ink); transition: all .18s; }
+.q-opt:hover:not(:disabled) { border-color: var(--ua); background: var(--ua-soft); transform: translateX(4px); }
+.q-opt.correct { border-color: var(--ok); background: #F0FBF7; font-weight: 800; }
+.q-opt.wrong { border-color: var(--bad); background: #FDF2F2; animation: shake .35s; }
+.q-opt:disabled { cursor: default; opacity: .75; }
+.q-opt.correct:disabled, .q-opt.wrong:disabled { opacity: 1; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.q-exp { display: none; margin-top: 10px; font-size: 14.5px; background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 12px; padding: 12px 16px; }
+.q-exp.show { display: block; animation: fadeUp .3s both; }
+.quiz-status { font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 16px; }
+.quiz-status b { color: var(--ua-dark); }
+
+@media (max-width: 640px) {
+  body { font-size: 15.5px; }
+  .card { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="unit-badge">소프트웨어와 생활 · 4단원 / 5</span>
+  <h1>모의 실험하는 <span class="ua">소프트웨어</span></h1>
+  <p class="sub">현실을 컴퓨터 안에 본떠서 — 위험 없이 "만약에?"를 실험하자 🧪</p>
+</header>
+
+<nav class="toc">
+  <a href="#c1">4-1 시뮬레이션이란</a>
+  <a href="#c2">4-2 어디에 쓰이나</a>
+  <a href="#c3">4-3 감염 확산 실험</a>
+  <a href="#c4">4-4 나의 시뮬 구상</a>
+  <a href="#quiz">📝 퀴즈</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════ 4-1 시뮬레이션이란 ═══════════ -->
+  <div class="card" id="c1">
+    <h2><span class="chip">4-1</span> 시뮬레이션 — 안전한 "만약에?" 실험실 🛫</h2>
+    <p class="lead">현실에서 하기엔 <strong>위험하거나, 비싸거나, 너무 오래 걸리는 실험</strong>을 컴퓨터 안의 모형 세계에서 한다.</p>
+    <p>비행 시뮬레이터에서 조종사는 수백 번 추락한다 — 그리고 아무도 다치지 않는다. 이것이 시뮬레이션의 본질이다: <mark>현실을 본뜬 모형(모델) 안에서 마음껏 실패하고, 현실에서는 성공만 하기</mark>.</p>
+
+    <h3>모든 시뮬레이션의 5가지 구성요소</h3>
+    <div class="flow">
+      <span class="f-step">🧍 개체</span><span class="f-arrow">＋</span>
+      <span class="f-step">📏 규칙</span><span class="f-arrow">＋</span>
+      <span class="f-step">🗺️ 환경</span><span class="f-arrow">＋</span>
+      <span class="f-step">⏱️ 시간</span><span class="f-arrow">＋</span>
+      <span class="f-step">🎛️ 파라미터</span>
+    </div>
+    <ul class="list">
+      <li><strong>개체</strong> — 움직이는 대상 (사람, 차, 공, 바이러스…)</li>
+      <li><strong>규칙</strong> — 개체가 어떻게 행동하고 서로 영향을 주는가 ("가까우면 옮는다")</li>
+      <li><strong>환경</strong> — 무대 (도로, 교실, 하늘)</li>
+      <li><strong>시간</strong> — 한 칸씩 흐르며 규칙이 반복 적용된다</li>
+      <li><strong>파라미터</strong> — 실험자가 바꿔 보는 조건 값 ("감염 확률을 낮추면?") — <mark>파라미터를 바꾸는 것이 곧 실험</mark>이다</li>
+    </ul>
+    <h3>왜 가치 있는가</h3>
+    <ul class="list">
+      <li>🛡️ <strong>위험 0</strong> — 추락해도, 충돌해도 안전</li>
+      <li>💸 <strong>비용 ↓</strong> — 진짜 차 100대를 부수는 대신 가상 충돌 시험</li>
+      <li>⏩ <strong>시간 압축</strong> — 100년치 기후 변화를 몇 분에</li>
+      <li>🔁 <strong>무한 반복</strong> — 조건만 바꿔 몇 번이고 다시</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════ 4-2 활용 분야 ═══════════ -->
+  <div class="card" id="c2">
+    <h2><span class="chip">4-2</span> 시뮬레이션은 어디서 일하고 있나 🌐</h2>
+    <p class="lead">눈에 안 보일 뿐, 뉴스와 게임과 일기예보 뒤에서 매일 돌아가고 있다.</p>
+    <div class="fusion-grid">
+      <div class="fusion"><div class="f-ico">✈️</div><h4>비행 조종 훈련</h4><p>실제 하늘에 뜨기 전 수백 시간의 가상 비행 — 항공 안전의 기둥</p></div>
+      <div class="fusion"><div class="f-ico">🚗</div><h4>자동차 충돌 시험</h4><p>가상 충돌 수천 번으로 안전 설계를 다듬은 뒤, 실물 시험은 최종 확인만</p></div>
+      <div class="fusion"><div class="f-ico">🌦️</div><h4>일기예보</h4><p>대기를 수백만 칸으로 쪼개 물리 규칙을 돌린다 — 예보는 시뮬레이션의 출력</p></div>
+      <div class="fusion"><div class="f-ico">🚦</div><h4>도시 교통</h4><p>신호 주기를 바꾸면 정체가 어떻게 변할지 도로 위 실험 없이 확인</p></div>
+      <div class="fusion"><div class="f-ico">🎮</div><h4>게임 물리 엔진</h4><p>공이 튀고 건물이 무너지는 모든 순간이 실시간 시뮬레이션</p></div>
+      <div class="fusion"><div class="f-ico">🦠</div><h4>방역 정책</h4><p>"거리두기를 하면 확산이 얼마나 줄까?" — 아래 4-3에서 직접 해 보자!</p></div>
+    </div>
+    <div class="activity">
+      <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
+      <p>우리 학교에서 시뮬레이션으로 미리 실험해 보고 싶은 것: <span class="blank">&nbsp;&nbsp;&nbsp;</span> (예: 축제 부스 배치에 따른 복도 혼잡도)</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 4-3 감염 확산 시뮬레이터 ═══════════ -->
+  <div class="card" id="c3">
+    <h2><span class="chip">4-3</span> 직접 실험 — 감기 확산 시뮬레이터 🦠</h2>
+    <p class="lead">점 80개가 사는 작은 세계. <strong>파라미터를 바꾸면 세계가 어떻게 달라지는지</strong> 실험하자.</p>
+
+    <div class="demo">
+      <div class="demo-title">🎮 시나리오를 고르고 실행해 보자 <span class="badge-live">LIVE</span></div>
+      <div class="btn-row" style="margin-bottom:4px">
+        <button class="btn ghost scn-btn on" data-scn="0">😐 그대로 두기</button>
+        <button class="btn ghost scn-btn" data-scn="1">😷 마스크·거리두기</button>
+        <button class="btn ghost scn-btn" data-scn="2">💉 백신 접종 50%</button>
+        <button class="btn" id="simRun">▶ 실행</button>
+      </div>
+      <canvas id="simCanvas" width="880" height="260" aria-label="감염 확산 시뮬레이션 화면"></canvas>
+      <div class="sim-hud">
+        <span><span class="dot" style="background:#B9C4D2"></span>건강 <b id="cntS">80</b></span>
+        <span><span class="dot" style="background:var(--ua)"></span>감염 <b id="cntI">0</b></span>
+        <span><span class="dot" style="background:#16A34A"></span>회복·면역 <b id="cntR">0</b></span>
+        <span class="peak">📈 최대 동시 감염: <b id="cntPeak">0</b></span>
+      </div>
+      <div class="demo-note" id="simNote">시나리오를 고르고 ▶ 실행 — 세 시나리오의 <b>최대 동시 감염(피크)</b>을 비교하는 것이 이 실험의 핵심이다!</div>
+      <p class="rm-note">※ 움직임이 부담스러우면 실행하지 않아도 아래 설계도 표로 개념을 정리할 수 있어요.</p>
+    </div>
+
+    <h3>이 시뮬의 설계도 — 현실을 세 줄로 요약한 것이 "모델"이다</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>구성요소</th><th>이 시뮬에서는</th></tr>
+      <tr><td><strong>개체</strong></td><td>점 80개 (돌아다니는 학생들)</td></tr>
+      <tr><td><strong>규칙</strong></td><td>가까이 스치면(12px 이내) 확률적으로 감염 · 감염 280틱 후 회복(면역)</td></tr>
+      <tr><td><strong>파라미터</strong></td><td>감염 확률(그대로 0.08 / 마스크 0.025) · 백신 접종률(0% / 50%)</td></tr>
+    </table></div>
+
+    <div class="warn"><span class="t">🚨 오개념 주의보 — 모델은 단순화다</span>
+      이 세계엔 잠복기도, 재감염도, 연령 차이도 없다 — 일부러 뺀 것이다. 시뮬레이션의 격언: <strong>"모든 모델은 틀렸다. 그러나 어떤 모델은 유용하다."</strong>
+      <mark>무엇을 뺐는지 아는 사람만 결과를 바르게 읽을 수 있다</mark> — 실제 방역 모델도 언론 발표 때 항상 가정(assumption)을 함께 밝힌다.
+    </div>
+    <div class="tip"><span class="t">💡 뉴스에서 봤던 그 말 — "곡선 평탄화"</span>
+      세 시나리오의 총 감염자가 비슷해도 <strong>피크(최대 동시 감염)</strong>가 낮으면 보건실(병상)이 버틴다.
+      마스크·백신 파라미터가 피크를 어떻게 눌렀는지 — 방금 너는 방역 정책 시뮬레이션을 돌린 것이다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 4-4 나의 시뮬 구상 ═══════════ -->
+  <div class="card" id="c4">
+    <h2><span class="chip">4-4</span> 나의 시뮬레이션 설계하기 ✏️</h2>
+    <p class="lead">복잡한 현상도 <strong>개체·규칙·파라미터</strong> 세 줄로 요약하면 시뮬레이션 모델이 된다.</p>
+    <div class="activity">
+      <div class="a-label">✍️ 모델로 표현하기 (수업 활동)</div>
+      <p>현상 <span class="blank">&nbsp;&nbsp;&nbsp;</span>을(를) 시뮬레이션한다면 —</p>
+      <p>개체는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 규칙은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 바꿔 볼 파라미터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span></p>
+      <p style="font-size:14px;color:var(--muted)">예: 매점 대기줄 — 개체=학생, 규칙=줄 서서 계산에 30초, 파라미터=계산대 수(1대 vs 2대)</p>
+    </div>
+    <div class="tip"><span class="t">💡 구현 도구</span>
+      엔트리·스크래치의 복제본 기능, 파이썬의 반복문만 있어도 위 모델을 구현할 수 있다(4-3도 결국 "점 80개 + 규칙 두 줄"이다). 모델 설계가 끝나면 구현은 생각보다 짧다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 퀴즈 ═══════════ -->
+  <details class="acc" id="quiz">
+    <summary>📝 4단원 개념 확인 퀴즈</summary>
+    <div class="acc-body">
+      <p class="quiz-status" id="quizStatus"></p>
+      <div id="quizWrap"></div>
+    </div>
+  </details>
+
+</main>
+
+<footer><span class="series">소프트웨어와 생활 4/5</span> · 모의 실험하는 소프트웨어 · 단일 HTML · 오프라인 실행</footer>
+
+<script>
+'use strict';
+
+/* ==========================================================
+   감염 확산 시뮬레이터 (UNIT_SPECS.md 사양)
+   N=80 · 반경 5px · 감염 거리 12px · 회복 280프레임
+   시나리오: p=0.08/0.025, 백신 0%/0%/50%
+   ========================================================== */
+(function () {
+  const SCN = [
+    { name: '😐 그대로 두기', p: 0.08, vacc: 0 },
+    { name: '😷 마스크·거리두기', p: 0.025, vacc: 0 },
+    { name: '💉 백신 접종 50%', p: 0.08, vacc: 40 },
+  ];
+  const N = 80, R = 5, INFECT_D = 12, RECOVER = 280;
+  const COLOR = { S: '#B9C4D2', I: '#DB2777', R: '#16A34A' };
+  const cv = document.getElementById('simCanvas');
+  const ctx = cv.getContext('2d');
+  let people = [], rafId = null, peak = 0, scn = 0, running = false;
+
+  function fitCanvas() {
+    const w = cv.clientWidth;
+    if (w > 0 && cv.width !== w) cv.width = w;
+  }
+  window.addEventListener('resize', fitCanvas);
+
+  function init(s) {
+    fitCanvas();
+    people = [];
+    for (let i = 0; i < N; i++) {
+      people.push({
+        x: R + Math.random() * (cv.width - 2 * R),
+        y: R + Math.random() * (cv.height - 2 * R),
+        vx: (Math.random() * 2.4 - 1.2) || 0.5,
+        vy: (Math.random() * 2.4 - 1.2) || 0.5,
+        st: 'S', t: 0,
+      });
+    }
+    for (let i = 0; i < s.vacc; i++) people[i].st = 'R';        // 백신 = 처음부터 면역
+    let inf = 0;
+    for (let i = N - 1; i >= 0 && inf < 3; i--) {               // 초기 감염 3
+      if (people[i].st === 'S') { people[i].st = 'I'; inf++; }
+    }
+    peak = 3;
+    draw(); hud();
+  }
+
+  function step(p) {
+    for (const a of people) {
+      a.x += a.vx; a.y += a.vy;
+      if (a.x < R || a.x > cv.width - R) { a.vx *= -1; a.x = Math.max(R, Math.min(cv.width - R, a.x)); }
+      if (a.y < R || a.y > cv.height - R) { a.vy *= -1; a.y = Math.max(R, Math.min(cv.height - R, a.y)); }
+      if (a.st === 'I' && ++a.t > RECOVER) a.st = 'R';
+    }
+    // 감염 판정 (80²=6400 비교 — 충분히 가볍다)
+    for (const a of people) {
+      if (a.st !== 'I') continue;
+      for (const b of people) {
+        if (b.st !== 'S') continue;
+        const dx = a.x - b.x, dy = a.y - b.y;
+        if (dx * dx + dy * dy < INFECT_D * INFECT_D && Math.random() < p) { b.st = 'I'; b.t = 0; }
+      }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const a of people) {
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, R, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR[a.st];
+      ctx.fill();
+    }
+  }
+
+  function counts() {
+    let s = 0, i = 0, r = 0;
+    for (const a of people) { if (a.st === 'S') s++; else if (a.st === 'I') i++; else r++; }
+    return { s, i, r };
+  }
+  function hud() {
+    const c = counts();
+    peak = Math.max(peak, c.i);
+    document.getElementById('cntS').textContent = c.s;
+    document.getElementById('cntI').textContent = c.i;
+    document.getElementById('cntR').textContent = c.r;
+    document.getElementById('cntPeak').textContent = peak;
+    return c;
+  }
+
+  function loop() {
+    step(SCN[scn].p);
+    draw();
+    const c = hud();
+    if (c.i === 0) {
+      running = false; rafId = null;
+      const total = c.r - SCN[scn].vacc; // 백신으로 시작한 면역은 감염 이력이 아님
+      document.getElementById('simNote').innerHTML =
+        '🏁 <b>' + SCN[scn].name + '</b> 종료 — 최대 동시 감염 <b>' + peak + '마리</b>, 감염을 겪은 개체 ' + total + '/' + (N - SCN[scn].vacc) + '. ' +
+        '다른 시나리오도 실행해 <b>피크를 비교</b>해 보자 — 파라미터 하나가 세계를 바꾼다!';
+      return;
+    }
+    rafId = requestAnimationFrame(loop);
+  }
+
+  document.querySelectorAll('.scn-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      scn = Number(b.dataset.scn);
+      document.querySelectorAll('.scn-btn').forEach(x => x.classList.toggle('on', x === b));
+      if (!running) { init(SCN[scn]); document.getElementById('simNote').innerHTML = SCN[scn].name + ' 준비 완료 — ▶ 실행!'; }
+    });
+  });
+  document.getElementById('simRun').addEventListener('click', () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    init(SCN[scn]);
+    running = true;
+    document.getElementById('simNote').innerHTML = '🦠 <b>' + SCN[scn].name + '</b> 실행 중… 로즈색 감염이 어떻게 퍼지는지, 피크가 몇에서 멈추는지 지켜보자.';
+    rafId = requestAnimationFrame(loop);
+  });
+
+  init(SCN[0]); // 초기 화면
+})();
+
+/* ==========================================================
+   퀴즈 엔진 (시리즈 공통)
+   ========================================================== */
+const QUIZ = [
+  { q: '시뮬레이션에 대한 설명으로 가장 알맞은 것은?',
+    opts: ['현실을 본뜬 모형 안에서 위험 없이 "만약에?"를 실험하는 것', '컴퓨터 게임을 오래 하는 것', '실험 없이 감으로 예측하는 것', '현실을 그대로 복사하는 것'], ans: 0,
+    exp: '핵심은 "본뜬 모형 + 안전한 실험". 현실을 전부 복사하는 게 아니라 필요한 부분만 단순화해 담는다 — 그래서 모델이라 부른다.' },
+  { q: '감염 시뮬레이터에서 "가까이 스치면 확률적으로 감염된다"는 5가지 구성요소 중 무엇인가?',
+    opts: ['개체', '규칙', '환경', '파라미터'], ans: 1,
+    exp: '개체(점)들이 서로 어떻게 영향을 주는지 정한 것 = 규칙이다. 감염 확률의 "값"(0.08 vs 0.025)을 바꾸는 것은 파라미터.' },
+  { q: '"100년치 기후 변화를 몇 분 만에 실험"하는 것은 시뮬레이션의 어떤 가치인가?',
+    opts: ['비용 절감', '위험 제거', '시간 압축', '무한 반복'], ans: 2,
+    exp: '현실의 시간을 기다릴 필요 없이 모형 세계의 시계를 빨리 돌리는 것 — 시간 압축이다. 기후·우주·진화 연구가 이 가치 위에 서 있다.' },
+  { q: '시뮬레이션에서 파라미터(감염 확률, 백신 접종률 등)를 바꿔 가며 돌려 보는 이유는?',
+    opts: ['화면을 화려하게 만들려고', '조건에 따라 결과가 어떻게 달라지는지 비교하는 것이 곧 실험이라서', '컴퓨터 성능을 시험하려고', '정답이 하나로 정해져 있어서'], ans: 1,
+    exp: '시뮬레이션의 본질 = 조건 실험. "마스크를 쓰면?"과 "백신 50%면?"의 피크를 비교하는 순간, 너는 정책 실험을 한 것이다.' },
+  { q: '"모든 모델은 틀렸다. 그러나 어떤 모델은 유용하다"가 뜻하는 것은?',
+    opts: ['시뮬레이션 결과는 믿으면 안 된다', '모델은 현실의 단순화이므로, 무엇을 뺐는지 알고 결과를 읽어야 한다', '모델은 복잡할수록 항상 좋다', '유용한 모델은 현실과 완전히 같다'], ans: 1,
+    exp: '잠복기·재감염을 뺀 우리 모델처럼, 모든 모델은 무언가를 생략한다. 생략을 알면 유용한 도구, 모르면 오해의 근원 — 그래서 실제 연구는 가정을 항상 명시한다.' },
+];
+
+let answered = 0;
+(function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  QUIZ.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.innerHTML = '<span class="qnum">' + (qi + 1) + '</span>' + item.q;
+    div.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    const exp = document.createElement('div');
+    exp.className = 'q-exp';
+    exp.innerHTML = '💡 ' + item.exp;
+    item.opts.forEach((label, oi) => {
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = ['①', '②', '③', '④'][oi] + ' ' + label;
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        opts.querySelectorAll('.q-opt').forEach(o => o.disabled = true);
+        if (oi === item.ans) { b.classList.add('correct'); b.textContent += '  ✅ 정답!'; }
+        else { b.classList.add('wrong'); b.textContent += '  ❌'; opts.children[item.ans].classList.add('correct'); }
+        exp.classList.add('show');
+        answered++;
+        updateStatus();
+      });
+      opts.appendChild(b);
+    });
+    div.appendChild(opts);
+    div.appendChild(exp);
+    wrap.appendChild(div);
+  });
+  updateStatus();
+})();
+function updateStatus() {
+  const el = document.getElementById('quizStatus');
+  el.innerHTML = answered >= QUIZ.length
+    ? '🎉 <b>퀴즈 완료!</b> 실험하는 눈이 생겼다 — 마지막 5단원, 가치를 창출하는 소프트웨어로!'
+    : '진행: <b>' + answered + '</b> / ' + QUIZ.length + ' 문항 — 보기를 클릭하면 바로 채점된다!';
+}
+</script>
+</body>
+</html>
