@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어와 생활 2단원 — 창작을 지원하는 소프트웨어</title>
+<style>
+/* ==========================================================
+   소프트웨어와 생활 시리즈 공통 (DESIGN_SPEC.md) — 2단원: 오렌지
+   ========================================================== */
+:root {
+  /* 단원 액센트 — 2단원 오렌지 */
+  --ua: #EA580C;
+  --ua-dark: #C2410C;
+  --ua-soft: #FDEFE3;
+  /* 중립 (웜 아이보리 무드) */
+  --bg: #FBFAF6;
+  --card: #FFFFFF;
+  --ink: #292524;
+  --muted: #6B6459;
+  --line: #EAE6DE;
+  /* 시리즈 5색 (고정 순서 — DESIGN_SPEC 검증 완료) */
+  --c1: #0D9488; --c2: #EA580C; --c3: #2563EB; --c4: #DB2777; --c5: #16A34A;
+  /* 시맨틱 */
+  --ok: #0E9F6E; --bad: #DC2626;
+  --radius: 18px;
+  --shadow: 0 3px 16px rgba(41, 37, 36, .07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink);
+  line-height: 1.75; font-size: 16.5px;
+}
+button:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid var(--ua); outline-offset: 2px; }
+
+/* ---------- 헤더: 회로 배선 모티프 ---------- */
+header {
+  position: relative; text-align: center;
+  padding: 56px 20px 34px; overflow: hidden;
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+header::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--c1), var(--c1)) 6% 26% / 120px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c1) 98%, transparent) 3.5% 25% / 10px 10px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 88% 34% / 100px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c2) 98%, transparent) 95.5% 33% / 10px 10px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 10% 74% / 90px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c3) 98%, transparent) 17% 73% / 10px 10px no-repeat,
+    linear-gradient(var(--c4), var(--c4)) 90% 78% / 110px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c4) 98%, transparent) 83.5% 77% / 10px 10px no-repeat,
+    linear-gradient(var(--c5), var(--c5)) 50% 12% / 80px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c5) 98%, transparent) 54% 11% / 10px 10px no-repeat;
+  opacity: .3;
+}
+.unit-badge {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .1em;
+  color: var(--ua-dark); background: var(--ua-soft); border: 1px solid var(--ua);
+  padding: 5px 16px; border-radius: 99px; margin-bottom: 16px;
+}
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.25; }
+h1 .ua { color: var(--ua-dark); }
+.sub { color: var(--muted); margin-top: 10px; font-size: 17px; }
+
+/* ---------- 미니 목차 ---------- */
+nav.toc {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  padding: 14px 20px; background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+}
+nav.toc a {
+  font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none;
+  padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--line);
+  transition: color .15s, border-color .15s, background .15s;
+}
+nav.toc a:hover { color: var(--ua-dark); border-color: var(--ua); background: var(--ua-soft); }
+
+/* ---------- 본문 & 카드 ---------- */
+main { max-width: 940px; margin: 0 auto; padding: 30px 20px 80px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 30px 30px 26px; margin-bottom: 26px;
+  scroll-margin-top: 70px;
+}
+h2 { font-size: 24px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+h2 .chip { font-size: 12px; font-weight: 800; color: #fff; background: var(--ua); border-radius: 8px; padding: 3px 10px; flex-shrink: 0; }
+h3 { font-size: 18px; font-weight: 800; margin: 26px 0 8px; }
+h3::before { content: '🔧 '; }
+p { margin: 8px 0; }
+.lead { color: var(--muted); font-size: 15.5px; margin-bottom: 12px; }
+strong { font-weight: 800; }
+mark { background: linear-gradient(transparent 55%, #FBD8BC 55%); color: inherit; padding: 0 2px; font-weight: 700; }
+ul.list, ol.list { padding-left: 24px; margin: 8px 0; }
+ul.list li, ol.list li { margin: 5px 0; }
+
+.tip, .warn { border-radius: 14px; padding: 15px 20px; margin: 16px 0; font-size: 15.5px; border: 1.5px solid; }
+.tip { background: var(--ua-soft); border-color: var(--ua); }
+.warn { background: #FDF2F2; border-color: #F5C0C0; }
+.tip .t, .warn .t { font-weight: 900; display: block; margin-bottom: 4px; }
+.tip .t { color: var(--ua-dark); }
+.warn .t { color: var(--bad); }
+
+/* ---------- 표 ---------- */
+.tbl-wrap { overflow-x: auto; margin: 14px 0; border-radius: 12px; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 480px; background: #fff; font-size: 15px; }
+th { background: var(--ink); color: #fff; font-weight: 800; padding: 10px 14px; text-align: left; font-size: 14px; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+
+/* ---------- 흐름 필 ---------- */
+.flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 14px 0; }
+.flow .f-step { background: var(--ua-soft); border: 1.5px solid var(--ua); color: var(--ua-dark); font-weight: 800; font-size: 14.5px; border-radius: 99px; padding: 8px 18px; }
+.flow .f-arrow { color: var(--muted); font-weight: 900; }
+
+/* ---------- 데모 공통 ---------- */
+.demo { background: #F6F4EE; border: 2px dashed #D8D2C6; border-radius: 16px; padding: 22px; margin: 18px 0; }
+.demo-title { font-weight: 900; font-size: 15px; margin-bottom: 12px; }
+.badge-live {
+  font-size: 11px; color: #fff; background: var(--ua);
+  border-radius: 99px; padding: 2px 9px; margin-left: 6px; vertical-align: 2px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.btn {
+  font-family: inherit; font-size: 14.5px; font-weight: 800;
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  border: none; color: #fff; background: var(--ua);
+  box-shadow: 0 3px 10px rgba(234, 88, 12, .3);
+  transition: transform .15s, filter .15s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.btn.ghost { background: #fff; color: var(--ink); border: 2px solid var(--line); box-shadow: none; }
+.btn.ghost.on { border-color: var(--ua); color: var(--ua-dark); background: var(--ua-soft); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.demo-note {
+  margin-top: 14px; font-size: 15px; font-weight: 600;
+  background: #fff; border-radius: 12px; padding: 12px 16px;
+  border-left: 4px solid var(--ua); min-height: 46px;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- 2-1 작품 해부 ---------- */
+.anat { display: grid; gap: 8px; margin: 8px 0 4px; }
+.part {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  font-family: inherit; font-size: 15px; color: var(--ink);
+  background: #fff; border: 2px solid var(--line); border-radius: 14px;
+  padding: 12px 16px; cursor: pointer; transition: border-color .15s, transform .15s;
+}
+.part:hover:not(.found) { border-color: var(--ua); transform: translateX(4px); }
+.part .p-ico { font-size: 22px; flex-shrink: 0; }
+.part .p-name { font-weight: 800; }
+.part .p-role { display: none; font-size: 14px; color: var(--ua-dark); font-weight: 700; margin-top: 2px; }
+.part.found { border-color: var(--ua); background: var(--ua-soft); cursor: default; }
+.part.found .p-role { display: block; animation: fadeUp .4s ease both; }
+.part .p-stage { margin-left: auto; flex-shrink: 0; font-size: 12px; font-weight: 900; color: var(--muted); border: 1.5px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+.part.found .p-stage { color: #fff; background: var(--ua); border-color: var(--ua); }
+
+/* ---------- 2-2 조립 시뮬레이터 ---------- */
+.pal-label { font-size: 13px; font-weight: 900; color: var(--muted); margin: 12px 0 6px; letter-spacing: .06em; }
+.pal { display: flex; gap: 8px; flex-wrap: wrap; }
+.pal button {
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  padding: 8px 14px; border-radius: 12px; border: 2px solid var(--line);
+  background: #fff; color: var(--ink); cursor: pointer; transition: all .15s;
+}
+.pal button:hover { border-color: var(--ua); }
+.pal button.sel { border-color: var(--ua); background: var(--ua-soft); color: var(--ua-dark); font-weight: 800; }
+.build-flow {
+  display: none; margin-top: 14px; padding: 14px 16px;
+  background: #fff; border-radius: 12px; border: 1.5px solid var(--line);
+  font-size: 15px; font-weight: 700; text-align: center;
+}
+.build-flow.show { display: block; animation: fadeUp .4s ease both; }
+.build-flow .bf-arrow { color: var(--muted); margin: 0 6px; }
+.build-flow.good { border-color: var(--ok); }
+.build-flow.bad-c { border-color: var(--bad); }
+
+/* ---------- 2-3 미디어 아트 캔버스 ---------- */
+.art-stage {
+  position: relative; height: 250px; border-radius: 14px; overflow: hidden;
+  background: #1C1917; cursor: crosshair; margin-top: 12px;
+  border: 2px solid var(--line); touch-action: none;
+}
+.art-stage .hintmsg {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: #A8A29E; font-size: 15px; font-weight: 700; pointer-events: none;
+  transition: opacity .4s;
+}
+.art-stage.touched .hintmsg { opacity: 0; }
+.spark {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: sparkFade 1.1s ease-out forwards;
+}
+@keyframes sparkFade {
+  from { opacity: .95; scale: .4; }
+  to { opacity: 0; scale: 2.2; }
+}
+
+/* ---------- 활동 박스 ---------- */
+.activity {
+  background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 14px;
+  padding: 18px 22px; margin: 18px 0;
+}
+.activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
+.activity p { font-size: 15.5px; margin: 4px 0; }
+.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+
+footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
+footer .series { font-weight: 800; color: var(--ua-dark); }
+
+/* ---------- 퀴즈 (시리즈 공통 엔진) ---------- */
+details.acc { border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); margin-bottom: 18px; overflow: hidden; }
+details.acc summary { cursor: pointer; list-style: none; padding: 20px 26px; font-weight: 900; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '▼'; margin-left: auto; font-size: 12px; color: var(--ua); transition: transform .25s; }
+details.acc[open] summary::after { transform: rotate(180deg); }
+details.acc summary:hover { background: var(--ua-soft); }
+details.acc .acc-body { padding: 4px 26px 26px; }
+.q-item { margin-bottom: 24px; }
+.q-text { font-weight: 800; margin-bottom: 10px; }
+.q-text .qnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; background: var(--ua); color: #fff; font-size: 13px; font-weight: 900; }
+.q-opts { display: grid; gap: 8px; }
+.q-opt { font-family: inherit; text-align: left; font-size: 15px; font-weight: 600; padding: 11px 16px; border-radius: 12px; cursor: pointer; border: 2px solid var(--line); background: #fff; color: var(--ink); transition: all .18s; }
+.q-opt:hover:not(:disabled) { border-color: var(--ua); background: var(--ua-soft); transform: translateX(4px); }
+.q-opt.correct { border-color: var(--ok); background: #F0FBF7; font-weight: 800; }
+.q-opt.wrong { border-color: var(--bad); background: #FDF2F2; animation: shake .35s; }
+.q-opt:disabled { cursor: default; opacity: .75; }
+.q-opt.correct:disabled, .q-opt.wrong:disabled { opacity: 1; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.q-exp { display: none; margin-top: 10px; font-size: 14.5px; background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 12px; padding: 12px 16px; }
+.q-exp.show { display: block; animation: fadeUp .3s both; }
+.quiz-status { font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 16px; }
+.quiz-status b { color: var(--ua-dark); }
+
+@media (max-width: 640px) {
+  body { font-size: 15.5px; }
+  .card { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .spark { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="unit-badge">소프트웨어와 생활 · 2단원 / 5</span>
+  <h1>창작을 지원하는 <span class="ua">소프트웨어</span></h1>
+  <p class="sub">화면 밖으로 나온 소프트웨어 — 세상을 감지하고, 세상에 반응하다 🔌</p>
+</header>
+
+<nav class="toc">
+  <a href="#c1">2-1 피지컬 컴퓨팅</a>
+  <a href="#c2">2-2 조립 시뮬레이터</a>
+  <a href="#c3">2-3 미디어 아트</a>
+  <a href="#c4">2-4 웨어러블과 공유</a>
+  <a href="#quiz">📝 퀴즈</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════ 2-1 피지컬 컴퓨팅 ═══════════ -->
+  <div class="card" id="c1">
+    <h2><span class="chip">2-1</span> 피지컬 컴퓨팅 — 소프트웨어에 몸을 달다 🤖</h2>
+    <p class="lead">1단원의 렌즈가 그대로 온다 — 다만 이번엔 <strong>입력과 출력이 진짜 세상</strong>이다.</p>
+    <div class="flow">
+      <span class="f-step">📡 센서 (입력)</span><span class="f-arrow">→</span>
+      <span class="f-step">🧠 마이크로컨트롤러 (처리)</span><span class="f-arrow">→</span>
+      <span class="f-step">⚙️ 액추에이터 (출력)</span>
+    </div>
+    <p><strong>센서</strong>는 세상을 숫자로 읽어 들이고(빛·소리·거리·온도…), <strong>마이크로컨트롤러</strong>(아두이노, 마이크로비트 같은 작은 컴퓨터)가 우리가 짠 소프트웨어로 판단하고, <strong>액추에이터</strong>가 세상에 행동한다(불 켜기·움직이기·소리 내기). 이 조합이 <mark>피지컬 컴퓨팅</mark>이다.</p>
+
+    <div class="tbl-wrap"><table>
+      <tr><th>역할</th><th>부품</th><th>읽거나 하는 것</th></tr>
+      <tr><td rowspan="3"><strong>센서 📡</strong><br>(세상 → 숫자)</td><td>빛 센서 / 소리 센서</td><td>밝기, 소리 크기</td></tr>
+      <tr><td>초음파(거리) 센서 / 온도 센서</td><td>물체까지 거리, 온도</td></tr>
+      <tr><td>버튼·터치 / 가속도 센서</td><td>눌림, 기울기·움직임</td></tr>
+      <tr><td rowspan="2"><strong>액추에이터 ⚙️</strong><br>(숫자 → 세상)</td><td>LED / 디스플레이</td><td>빛과 정보 표시</td></tr>
+      <tr><td>서보 모터 / 스피커·부저 / 펌프</td><td>움직임, 소리, 물 주기</td></tr>
+    </table></div>
+
+    <h3>작품 해부 실습 — 스마트 화분은 어떻게 일할까</h3>
+    <p>피지컬 컴퓨팅 작품을 만나면 먼저 <strong>세 조각으로 해부</strong>하라. "흙이 마르면 스스로 물을 주는 화분"을 분해해 보자.</p>
+    <div class="demo">
+      <div class="demo-title">🎮 스마트 화분 해부하기 <span class="badge-live">LIVE</span> · 해부 <strong id="anatScore">0 / 3</strong></div>
+      <div class="anat" id="anatList"></div>
+      <div class="demo-note" id="anatNote">각 부품을 클릭해 역할을 밝혀 보자 — 어떤 부품이 입력·처리·출력일까?</div>
+    </div>
+    <div class="tip"><span class="t">💡 분석의 순서</span>
+      어떤 작품이든 ① 무엇을 감지하나(센서) → ② 어떤 규칙으로 판단하나(소프트웨어) → ③ 무엇을 움직이나(액추에이터) 순서로 물으면 <mark>구성과 작동 원리 분석</mark>이 끝난다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 2-2 조립 시뮬레이터 ═══════════ -->
+  <div class="card" id="c2">
+    <h2><span class="chip">2-2</span> 부품 골라 조립하기 — 아이디어 → 시스템 🧩</h2>
+    <p class="lead">아이디어를 시스템으로 바꾸는 열쇠는 <strong>"무엇을 감지하고, 무엇을 움직일까"</strong>의 선택이다.</p>
+
+    <div class="demo">
+      <div class="demo-title">🎮 피지컬 컴퓨팅 조립 시뮬레이터 <span class="badge-live">LIVE</span></div>
+      <div class="pal-label">① 미션 선택</div>
+      <div class="pal" id="missionPal"></div>
+      <div class="pal-label">② 센서 선택 (입력)</div>
+      <div class="pal" id="sensorPal"></div>
+      <div class="pal-label">③ 액추에이터 선택 (출력)</div>
+      <div class="pal" id="actPal"></div>
+      <div class="btn-row"><button class="btn" id="buildBtn">▶ 조립해서 테스트!</button></div>
+      <div class="build-flow" id="buildFlow"></div>
+      <div class="demo-note" id="buildNote">미션을 고르고, 알맞은 센서와 액추에이터를 골라 조립해 보자!</div>
+    </div>
+
+    <div class="warn"><span class="t">🚨 오개념 주의보 — 부품보다 판단 규칙이 소프트웨어다</span>
+      같은 소리 센서+LED라도 "박수 2번에 켜기"와 "시끄러우면 경고등"은 <strong>완전히 다른 작품</strong>이다.
+      부품은 몸이고, <mark>판단 규칙(소프트웨어)이 작품의 영혼</mark>이다 — 그래서 부품 선택 다음엔 반드시 "어떤 규칙으로?"를 설계한다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 2-3 미디어 아트 ═══════════ -->
+  <div class="card" id="c3">
+    <h2><span class="chip">2-3</span> 미디어 아트 — 관객이 작품을 완성한다 🎨</h2>
+    <p class="lead">피지컬 컴퓨팅이 예술을 만나면 — 작품이 관객을 <strong>감지하고 반응</strong>하기 시작한다.</p>
+    <p>거대한 전시장 벽에 꽃이 피어나고, 관객이 다가가면 꽃잎이 흩어진다. 관객의 위치(센서 입력)를 소프트웨어가 읽고, 영상과 소리(출력)를 실시간으로 그려 내는 것 — <mark>관객의 참여가 없으면 미완성인 예술</mark>, 이것이 미디어 아트다.</p>
+
+    <div class="demo">
+      <div class="demo-title">🎮 1평짜리 미디어 아트 체험 <span class="badge-live">LIVE</span></div>
+      <p style="font-size:15px">아래 무대 위에서 마우스(또는 손가락)를 움직여 보자 — <strong>너의 움직임이 입력</strong>이고, 빛의 궤적이 출력이다.</p>
+      <div class="art-stage" id="artStage"><span class="hintmsg">🖱️ 여기에서 움직여 보세요</span></div>
+      <div class="demo-note">방금 체험한 구조: 포인터 위치(센서 입력) → 색·크기 계산(소프트웨어 처리) → 빛 파티클(출력). 실제 전시장은 카메라·거리 센서가 관객 전체를 읽는다는 점만 다르다!</div>
+    </div>
+
+    <h3>여기서 소프트웨어의 "가치"가 드러난다</h3>
+    <ul class="list">
+      <li><strong>상호작용</strong> — 그림은 걸려 있지만, 미디어 아트는 관객마다 <mark>다르게 반응</mark>한다. 같은 작품이 매번 새 작품이 된다.</li>
+      <li><strong>무한 변신</strong> — 하드웨어는 그대로 두고 <mark>코드만 바꾸면 완전히 다른 작품</mark>. 물감은 다시 살 수 없지만 소프트웨어는 무한히 고쳐 그릴 수 있다.</li>
+      <li><strong>표현의 확장</strong> — 소리를 색으로, 심장 박동을 파도로 — 사람 손으로 불가능한 번역을 소프트웨어가 해 낸다.</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════ 2-4 웨어러블 ═══════════ -->
+  <div class="card" id="c4">
+    <h2><span class="chip">2-4</span> 웨어러블 — 입는 소프트웨어, 퍼지는 가치 🧥</h2>
+    <p class="lead">피지컬 컴퓨팅을 <strong>몸에 입히면</strong> 웨어러블이 된다. 그리고 작품은 <strong>공유될 때</strong> 가치가 커진다.</p>
+    <p>스마트워치(심박 센서 → 건강 알림)만 웨어러블이 아니다. 전도성 실과 LED, 작은 컨트롤러만 있으면 교실에서도 만들 수 있다:</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>작품 아이디어</th><th>센서 (입력)</th><th>액추에이터 (출력)</th></tr>
+      <tr><td>🚴 야간 자전거 안전 재킷</td><td>가속도 센서 (감속 감지)</td><td>등판의 LED 브레이크 등</td></tr>
+      <tr><td>🎒 미아 방지 가방</td><td>거리 센서 (보호자와 멀어짐)</td><td>부저 알림</td></tr>
+      <tr><td>🧢 자외선 경보 모자</td><td>빛(UV) 센서</td><td>챙의 LED 색 변화</td></tr>
+    </table></div>
+
+    <h3>만들었다면 — 공유가 가치를 확산시킨다</h3>
+    <ul class="list">
+      <li><strong>발표·전시</strong>: 작동 영상과 함께 "왜 만들었는지(문제)"를 보여 주면 다음 제작자에게 영감이 된다</li>
+      <li><strong>제작 과정 공개</strong>: 부품 목록·회로 연결·코드를 공개하면 누구든 <mark>따라 만들고 개선</mark>할 수 있다 — 오픈 소스 정신</li>
+      <li><strong>피드백 받기</strong>: "장갑을 끼면 버튼을 못 눌러요" 같은 사용 후기가 다음 버전을 만든다</li>
+    </ul>
+    <div class="tip"><span class="t">💡 소프트웨어 가치의 마지막 조각</span>
+      물건은 나누면 반이 되지만, <strong>소프트웨어와 지식은 나눠도 줄지 않고 오히려 자란다</strong>. 전 세계 아두이노 작품 대부분이 누군가 공개한 회로와 코드에서 출발했다 — 너의 작품도 누군가의 출발점이 될 수 있다.
+    </div>
+    <div class="activity">
+      <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
+      <p>내가 만들고 싶은 웨어러블: <span class="blank">&nbsp;&nbsp;&nbsp;</span> — 센서는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 액추에이터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 판단 규칙은 "<span class="blank">&nbsp;&nbsp;&nbsp;</span>이면 <span class="blank">&nbsp;&nbsp;&nbsp;</span>한다"</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 퀴즈 ═══════════ -->
+  <details class="acc" id="quiz">
+    <summary>📝 2단원 개념 확인 퀴즈</summary>
+    <div class="acc-body">
+      <p class="quiz-status" id="quizStatus"></p>
+      <div id="quizWrap"></div>
+    </div>
+  </details>
+
+</main>
+
+<footer><span class="series">소프트웨어와 생활 2/5</span> · 창작을 지원하는 소프트웨어 · 단일 HTML · 오프라인 실행</footer>
+
+<script>
+'use strict';
+
+/* ==========================================================
+   데모 1 — 스마트 화분 해부
+   ========================================================== */
+(function () {
+  const PARTS = [
+    { ico: '🌡️', name: '토양 습도 센서', role: '흙이 얼마나 말랐는지 숫자로 읽는다 — 세상을 숫자로!', stage: '입력' },
+    { ico: '🧠', name: '마이크로컨트롤러 (아두이노)', role: '"습도가 30% 아래로 떨어지면 물을 준다"는 규칙(소프트웨어)을 실행한다', stage: '처리' },
+    { ico: '🚿', name: '물 펌프 + 상태 LED', role: '펌프로 물을 주고, LED로 "물 주는 중"을 표시한다 — 숫자를 행동으로!', stage: '출력' },
+  ];
+  let found = 0;
+  const wrap = document.getElementById('anatList');
+  const note = document.getElementById('anatNote');
+  PARTS.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'part';
+    b.innerHTML = '<span class="p-ico">' + p.ico + '</span>' +
+      '<span><span class="p-name">' + p.name + '</span><span class="p-role">' + p.role + '</span></span>' +
+      '<span class="p-stage">?</span>';
+    b.addEventListener('click', () => {
+      if (b.classList.contains('found')) return;
+      b.classList.add('found');
+      b.querySelector('.p-stage').textContent = p.stage;
+      found++;
+      document.getElementById('anatScore').textContent = found + ' / 3';
+      if (found === 3) note.innerHTML = '🎉 해부 완료! 센서(입력) → 소프트웨어(처리) → 액추에이터(출력) — <b>어떤 피지컬 컴퓨팅 작품이든 이 세 조각</b>으로 분해된다.';
+    });
+    wrap.appendChild(b);
+  });
+})();
+
+/* ==========================================================
+   데모 2 — 조립 시뮬레이터
+   ========================================================== */
+(function () {
+  const MISSIONS = [
+    { name: '👏 박수 치면 불 켜지는 방', sensor: '소리 센서', acts: ['LED'], rule: '"큰 소리가 2번 연속?"',
+      hint: { sensor: '박수는 소리다 — 무엇으로 들을까?', act: '방을 밝히려면 무엇이 필요할까?' } },
+    { name: '🤖 다가가면 인사하는 인형', sensor: '초음파(거리) 센서', acts: ['스피커', '서보 모터'], rule: '"거리가 50cm 이내?"',
+      hint: { sensor: '"다가옴"은 거리의 변화다', act: '인사는 소리(스피커)로도, 고개 숙임(서보 모터)으로도 가능!' } },
+    { name: '🌙 어두워지면 켜지는 가로등', sensor: '빛 센서', acts: ['LED'], rule: '"밝기가 기준보다 낮음?"',
+      hint: { sensor: '"어두워짐"을 읽으려면?', act: '가로등의 출력은 빛!' } },
+  ];
+  const SENSORS = ['소리 센서', '빛 센서', '초음파(거리) 센서', '온도 센서', '버튼', '가속도 센서'];
+  const ACTS = ['LED', '서보 모터', '스피커', '디스플레이', '물 펌프'];
+  const ICO = { 'LED': '💡', '서보 모터': '⚙️', '스피커': '🔊', '디스플레이': '🖥️', '물 펌프': '🚿',
+    '소리 센서': '🎤', '빛 센서': '🔆', '초음파(거리) 센서': '📡', '온도 센서': '🌡️', '버튼': '🔘', '가속도 센서': '📳' };
+  let mission = null, sensor = null, act = null;
+
+  function makePal(id, items, onPick) {
+    const pal = document.getElementById(id);
+    items.forEach((it, i) => {
+      const b = document.createElement('button');
+      b.textContent = (ICO[it] ? ICO[it] + ' ' : '') + (typeof it === 'string' ? it : it.name);
+      b.addEventListener('click', () => {
+        pal.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x === b));
+        onPick(i);
+      });
+      pal.appendChild(b);
+    });
+  }
+  makePal('missionPal', MISSIONS.map(m => m.name), i => { mission = i; resetFlow(); });
+  makePal('sensorPal', SENSORS, i => { sensor = SENSORS[i]; });
+  makePal('actPal', ACTS, i => { act = ACTS[i]; });
+
+  const flow = document.getElementById('buildFlow');
+  const note = document.getElementById('buildNote');
+  function resetFlow() { flow.classList.remove('show', 'good', 'bad-c'); }
+
+  document.getElementById('buildBtn').addEventListener('click', () => {
+    if (mission === null) { note.innerHTML = '⚠️ 먼저 <b>미션</b>을 골라 주세요!'; return; }
+    if (!sensor || !act) { note.innerHTML = '⚠️ <b>센서와 액추에이터</b>를 하나씩 골라야 조립할 수 있어요!'; return; }
+    const m = MISSIONS[mission];
+    const okS = sensor === m.sensor;
+    const okA = m.acts.includes(act);
+    flow.classList.add('show');
+    flow.classList.toggle('good', okS && okA);
+    flow.classList.toggle('bad-c', !(okS && okA));
+    flow.innerHTML = ICO[sensor] + ' ' + sensor + '<span class="bf-arrow">→</span>🧠 ' + m.rule + '<span class="bf-arrow">→</span>' + ICO[act] + ' ' + act;
+    if (okS && okA) {
+      note.innerHTML = '🎉 <b>작동 성공!</b> ' + m.name.replace(/^\S+ /, '') + ' 완성. 다른 미션도 조립해 보고, "판단 규칙"을 어떻게 바꾸면 작품이 달라질지도 상상해 보자!';
+    } else if (!okS && okA) {
+      note.innerHTML = '🔧 액추에이터는 맞는데 센서가 아쉽다 — 힌트: ' + m.hint.sensor;
+    } else if (okS && !okA) {
+      note.innerHTML = '🔧 센서는 정확! 출력을 다시 생각해 보자 — 힌트: ' + m.hint.act;
+    } else {
+      note.innerHTML = '🔄 둘 다 다시! 힌트: ' + m.hint.sensor + ' / ' + m.hint.act;
+    }
+  });
+})();
+
+/* ==========================================================
+   데모 3 — 미디어 아트 캔버스
+   ========================================================== */
+(function () {
+  const stage = document.getElementById('artStage');
+  const COLORS = ['#0D9488', '#EA580C', '#2563EB', '#DB2777', '#16A34A'];
+  let last = 0, ci = 0;
+  function spawn(x, y) {
+    const now = performance.now();
+    if (now - last < 40) return; // 과밀 방지
+    last = now;
+    stage.classList.add('touched');
+    const s = document.createElement('span');
+    s.className = 'spark';
+    const size = 14 + Math.random() * 26;
+    s.style.width = s.style.height = size + 'px';
+    s.style.left = x + 'px';
+    s.style.top = y + 'px';
+    s.style.background = COLORS[ci % COLORS.length];
+    ci++;
+    stage.appendChild(s);
+    s.addEventListener('animationend', () => s.remove());
+    if (stage.querySelectorAll('.spark').length > 60) stage.querySelector('.spark').remove();
+  }
+  stage.addEventListener('pointermove', e => {
+    const r = stage.getBoundingClientRect();
+    spawn(e.clientX - r.left, e.clientY - r.top);
+  });
+  stage.addEventListener('pointerdown', e => {
+    const r = stage.getBoundingClientRect();
+    for (let i = 0; i < 6; i++) spawn(e.clientX - r.left + (Math.random() - .5) * 60, e.clientY - r.top + (Math.random() - .5) * 60), last = 0;
+  });
+})();
+
+/* ==========================================================
+   퀴즈 엔진 (시리즈 공통)
+   ========================================================== */
+const QUIZ = [
+  { q: '피지컬 컴퓨팅에 대한 설명으로 가장 알맞은 것은?',
+    opts: ['모니터 안에서만 동작하는 프로그램', '센서로 세상을 감지하고 액추에이터로 세상에 반응하는 컴퓨팅', '체육 시간에 하는 컴퓨터 게임', '종이에 회로를 그리는 활동'], ans: 1,
+    exp: '핵심은 "화면 밖" — 입력과 출력이 실제 세상이다. 센서(세상→숫자) + 소프트웨어(판단) + 액추에이터(숫자→세상)의 조합.' },
+  { q: '다음 중 액추에이터(출력 장치)는?',
+    opts: ['초음파 센서', '빛 센서', '서보 모터', '가속도 센서'], ans: 2,
+    exp: '센서는 읽고, 액추에이터는 움직인다. 서보 모터는 신호를 받아 실제로 회전하는 출력 장치 — 나머지 셋은 전부 세상을 읽는 센서다.' },
+  { q: '"어두워지면 자동으로 켜지는 가로등"에 반드시 필요한 센서는?',
+    opts: ['소리 센서', '빛 센서', '온도 센서', '거리 센서'], ans: 1,
+    exp: '"어두워짐"은 밝기의 변화이므로 빛 센서가 읽어야 한다. 그다음 "밝기 < 기준"이라는 판단 규칙(소프트웨어)이 LED를 켠다.' },
+  { q: '미디어 아트에서 소프트웨어가 만드는 고유한 가치는?',
+    opts: ['그림보다 물감이 적게 든다', '관객의 움직임에 실시간으로 반응하는 상호작용', '전시장이 필요 없다', '반드시 비싼 장비를 쓴다는 점'], ans: 1,
+    exp: '미디어 아트의 본질은 상호작용 — 관객(입력)에 따라 작품(출력)이 매번 달라진다. 코드만 바꾸면 새 작품이 되는 무한 변신도 소프트웨어만의 가치.' },
+  { q: '작품의 부품 목록·회로·코드를 공개하며 공유하는 활동의 가장 큰 의미는?',
+    opts: ['자랑을 할 수 있다', '누구든 따라 만들고 개선할 수 있어 가치가 확산된다', '작품을 비싸게 팔 수 있다', '숙제 검사를 통과할 수 있다'], ans: 1,
+    exp: '소프트웨어와 지식은 나눠도 줄지 않는다. 공개된 작품은 다음 제작자의 출발점이 되어 가치가 눈덩이처럼 자란다 — 오픈 소스 정신이다.' },
+];
+
+let answered = 0;
+(function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  QUIZ.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.innerHTML = '<span class="qnum">' + (qi + 1) + '</span>' + item.q;
+    div.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    const exp = document.createElement('div');
+    exp.className = 'q-exp';
+    exp.innerHTML = '💡 ' + item.exp;
+    item.opts.forEach((label, oi) => {
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = ['①', '②', '③', '④'][oi] + ' ' + label;
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        opts.querySelectorAll('.q-opt').forEach(o => o.disabled = true);
+        if (oi === item.ans) { b.classList.add('correct'); b.textContent += '  ✅ 정답!'; }
+        else { b.classList.add('wrong'); b.textContent += '  ❌'; opts.children[item.ans].classList.add('correct'); }
+        exp.classList.add('show');
+        answered++;
+        updateStatus();
+      });
+      opts.appendChild(b);
+    });
+    div.appendChild(opts);
+    div.appendChild(exp);
+    wrap.appendChild(div);
+  });
+  updateStatus();
+})();
+function updateStatus() {
+  const el = document.getElementById('quizStatus');
+  el.innerHTML = answered >= QUIZ.length
+    ? '🎉 <b>퀴즈 완료!</b> 부품 보는 눈이 생겼다 — 다음은 3단원, 데이터로 현상을 분석하는 소프트웨어!'
+    : '진행: <b>' + answered + '</b> / ' + QUIZ.length + ' 문항 — 보기를 클릭하면 바로 채점된다!';
+}
+</script>
+</body>
+</html>
