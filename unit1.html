@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어와 생활 1단원 — 세상을 변화시키는 소프트웨어</title>
+<style>
+/* ==========================================================
+   소프트웨어와 생활 시리즈 공통 (DESIGN_SPEC.md) — 1단원: 틸
+   ========================================================== */
+:root {
+  /* 단원 액센트 — 단원 바꿀 때 이 3줄만 교체 */
+  --ua: #0D9488;
+  --ua-dark: #0F766E;
+  --ua-soft: #E6F5F2;
+  /* 중립 (웜 아이보리 무드) */
+  --bg: #FBFAF6;
+  --card: #FFFFFF;
+  --ink: #292524;
+  --muted: #6B6459;
+  --line: #EAE6DE;
+  /* 시리즈 5색 (고정 순서 — DESIGN_SPEC 검증 완료) */
+  --c1: #0D9488; --c2: #EA580C; --c3: #2563EB; --c4: #DB2777; --c5: #16A34A;
+  /* 시맨틱 */
+  --ok: #0E9F6E; --bad: #DC2626;
+  --radius: 18px;
+  --shadow: 0 3px 16px rgba(41, 37, 36, .07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink);
+  line-height: 1.75; font-size: 16.5px;
+}
+button:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid var(--ua); outline-offset: 2px; }
+
+/* ---------- 헤더: 회로 배선 모티프 ---------- */
+header {
+  position: relative; text-align: center;
+  padding: 56px 20px 34px; overflow: hidden;
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+header::before { /* 회로 트레이스: 가는 선 + 노드 점 */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--c1), var(--c1)) 6% 26% / 120px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c1) 98%, transparent) 3.5% 25% / 10px 10px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 88% 34% / 100px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c2) 98%, transparent) 95.5% 33% / 10px 10px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 10% 74% / 90px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c3) 98%, transparent) 17% 73% / 10px 10px no-repeat,
+    linear-gradient(var(--c4), var(--c4)) 90% 78% / 110px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c4) 98%, transparent) 83.5% 77% / 10px 10px no-repeat,
+    linear-gradient(var(--c5), var(--c5)) 50% 12% / 80px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c5) 98%, transparent) 54% 11% / 10px 10px no-repeat;
+  opacity: .3;
+}
+.unit-badge {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .1em;
+  color: var(--ua-dark); background: var(--ua-soft); border: 1px solid var(--ua);
+  padding: 5px 16px; border-radius: 99px; margin-bottom: 16px;
+}
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.25; }
+h1 .ua { color: var(--ua-dark); }
+.sub { color: var(--muted); margin-top: 10px; font-size: 17px; }
+
+/* ---------- 미니 목차 ---------- */
+nav.toc {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  padding: 14px 20px; background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+}
+nav.toc a {
+  font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none;
+  padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--line);
+  transition: color .15s, border-color .15s, background .15s;
+}
+nav.toc a:hover { color: var(--ua-dark); border-color: var(--ua); background: var(--ua-soft); }
+
+/* ---------- 본문 & 카드 ---------- */
+main { max-width: 940px; margin: 0 auto; padding: 30px 20px 80px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 30px 30px 26px; margin-bottom: 26px;
+  scroll-margin-top: 70px;
+}
+h2 { font-size: 24px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+h2 .chip { font-size: 12px; font-weight: 800; color: #fff; background: var(--ua); border-radius: 8px; padding: 3px 10px; flex-shrink: 0; }
+h3 { font-size: 18px; font-weight: 800; margin: 26px 0 8px; }
+h3::before { content: '🔎 '; }
+p { margin: 8px 0; }
+.lead { color: var(--muted); font-size: 15.5px; margin-bottom: 12px; }
+strong { font-weight: 800; }
+mark { background: linear-gradient(transparent 55%, #B9E8E0 55%); color: inherit; padding: 0 2px; font-weight: 700; }
+ul.list, ol.list { padding-left: 24px; margin: 8px 0; }
+ul.list li, ol.list li { margin: 5px 0; }
+
+.tip, .warn { border-radius: 14px; padding: 15px 20px; margin: 16px 0; font-size: 15.5px; border: 1.5px solid; }
+.tip { background: var(--ua-soft); border-color: var(--ua); }
+.warn { background: #FDF2F2; border-color: #F5C0C0; }
+.tip .t, .warn .t { font-weight: 900; display: block; margin-bottom: 4px; }
+.tip .t { color: var(--ua-dark); }
+.warn .t { color: var(--bad); }
+
+/* ---------- 표 ---------- */
+.tbl-wrap { overflow-x: auto; margin: 14px 0; border-radius: 12px; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 480px; background: #fff; font-size: 15px; }
+th { background: var(--ink); color: #fff; font-weight: 800; padding: 10px 14px; text-align: left; font-size: 14px; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td.plus { color: var(--ok); font-weight: 700; }
+td.minus { color: var(--bad); font-weight: 700; }
+
+/* ---------- 데모 공통 ---------- */
+.demo { background: #F6F4EE; border: 2px dashed #D8D2C6; border-radius: 16px; padding: 22px; margin: 18px 0; }
+.demo-title { font-weight: 900; font-size: 15px; margin-bottom: 12px; }
+.badge-live {
+  font-size: 11px; color: #fff; background: var(--ua);
+  border-radius: 99px; padding: 2px 9px; margin-left: 6px; vertical-align: 2px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.btn {
+  font-family: inherit; font-size: 14.5px; font-weight: 800;
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  border: none; color: #fff; background: var(--ua);
+  box-shadow: 0 3px 10px rgba(13, 148, 136, .3);
+  transition: transform .15s, filter .15s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn.ghost { background: #fff; color: var(--ink); border: 2px solid var(--line); box-shadow: none; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.demo-note {
+  margin-top: 14px; font-size: 15px; font-weight: 600;
+  background: #fff; border-radius: 12px; padding: 12px 16px;
+  border-left: 4px solid var(--ua); min-height: 46px;
+}
+
+/* ---------- 데모1: 하루 24시간 SW 사냥 ---------- */
+.day-line { display: grid; gap: 8px; margin: 8px 0 4px; }
+.moment {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  font-family: inherit; font-size: 15px; color: var(--ink);
+  background: #fff; border: 2px solid var(--line); border-radius: 14px;
+  padding: 12px 16px; cursor: pointer; transition: border-color .15s, transform .15s;
+}
+.moment:hover:not(.found) { border-color: var(--ua); transform: translateX(4px); }
+.moment .m-time { font-weight: 900; font-size: 13.5px; color: var(--muted); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.moment .m-what { font-weight: 800; }
+.moment .m-sw { display: none; font-size: 14px; color: var(--ua-dark); font-weight: 700; margin-top: 2px; }
+.moment.found { border-color: var(--ua); background: var(--ua-soft); cursor: default; }
+.moment.found .m-sw { display: block; animation: fadeUp .4s ease both; }
+.moment .m-mark { margin-left: auto; font-size: 18px; flex-shrink: 0; color: var(--muted); }
+.moment.found .m-mark { color: var(--ua-dark); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- 데모2: 입력→처리→출력 렌즈 게임 ---------- */
+.flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 14px 0; }
+.flow .f-step { background: var(--ua-soft); border: 1.5px solid var(--ua); color: var(--ua-dark); font-weight: 800; font-size: 14.5px; border-radius: 99px; padding: 8px 18px; }
+.flow .f-arrow { color: var(--muted); font-weight: 900; }
+.lens-grid { display: grid; gap: 10px; margin-top: 4px; }
+.lens-item { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 14px 16px; transition: border-color .2s; }
+.lens-item .li-q { font-weight: 800; font-size: 15px; margin-bottom: 8px; }
+.lens-item .li-q .li-tag { display: inline-block; font-size: 12px; font-weight: 800; color: var(--ua-dark); background: var(--ua-soft); border-radius: 6px; padding: 1px 8px; margin-right: 6px; }
+.lens-item .li-btns { display: grid; gap: 6px; }
+.lens-item .li-btns button {
+  font-family: inherit; font-size: 14px; font-weight: 600; text-align: left;
+  padding: 8px 12px; border-radius: 9px; border: 1.5px solid var(--line);
+  background: #fff; color: var(--ink); cursor: pointer; transition: all .15s;
+}
+.lens-item .li-btns button:hover:not(:disabled) { border-color: var(--ua); background: var(--ua-soft); }
+.lens-item .li-btns button:disabled { cursor: default; opacity: .8; }
+.lens-item .li-btns button.right { border-color: var(--ok); background: #F0FBF7; font-weight: 800; opacity: 1; }
+.lens-item .li-btns button.wrong { border-color: var(--bad); background: #FDF2F2; opacity: 1; }
+.lens-item .li-mark { font-size: 13.5px; font-weight: 700; margin-top: 6px; min-height: 18px; }
+.lens-item.done-r .li-mark { color: var(--ok); }
+.lens-item.done-w .li-mark { color: var(--bad); }
+
+/* ---------- 융합 사례 카드 ---------- */
+.fusion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin: 14px 0; }
+.fusion { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.fusion .f-ico { font-size: 24px; margin-bottom: 6px; }
+.fusion h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.fusion p { font-size: 13.5px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+/* ---------- 활동 박스 ---------- */
+.activity {
+  background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 14px;
+  padding: 18px 22px; margin: 18px 0;
+}
+.activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
+.activity p { font-size: 15.5px; margin: 4px 0; }
+.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+
+footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
+footer .series { font-weight: 800; color: var(--ua-dark); }
+
+/* ---------- 퀴즈 (시리즈 공통 엔진) ---------- */
+details.acc { border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); margin-bottom: 18px; overflow: hidden; }
+details.acc summary { cursor: pointer; list-style: none; padding: 20px 26px; font-weight: 900; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '▼'; margin-left: auto; font-size: 12px; color: var(--ua); transition: transform .25s; }
+details.acc[open] summary::after { transform: rotate(180deg); }
+details.acc summary:hover { background: var(--ua-soft); }
+details.acc .acc-body { padding: 4px 26px 26px; }
+.q-item { margin-bottom: 24px; }
+.q-text { font-weight: 800; margin-bottom: 10px; }
+.q-text .qnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; background: var(--ua); color: #fff; font-size: 13px; font-weight: 900; }
+.q-opts { display: grid; gap: 8px; }
+.q-opt { font-family: inherit; text-align: left; font-size: 15px; font-weight: 600; padding: 11px 16px; border-radius: 12px; cursor: pointer; border: 2px solid var(--line); background: #fff; color: var(--ink); transition: all .18s; }
+.q-opt:hover:not(:disabled) { border-color: var(--ua); background: var(--ua-soft); transform: translateX(4px); }
+.q-opt.correct { border-color: var(--ok); background: #F0FBF7; font-weight: 800; }
+.q-opt.wrong { border-color: var(--bad); background: #FDF2F2; animation: shake .35s; }
+.q-opt:disabled { cursor: default; opacity: .75; }
+.q-opt.correct:disabled, .q-opt.wrong:disabled { opacity: 1; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.q-exp { display: none; margin-top: 10px; font-size: 14.5px; background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 12px; padding: 12px 16px; }
+.q-exp.show { display: block; animation: fadeUp .3s both; }
+.quiz-status { font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 16px; }
+.quiz-status b { color: var(--ua-dark); }
+
+@media (max-width: 640px) {
+  body { font-size: 15.5px; }
+  .card { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="unit-badge">소프트웨어와 생활 · 1단원 / 5</span>
+  <h1>세상을 변화시키는 <span class="ua">소프트웨어</span></h1>
+  <p class="sub">이미 네 하루는 소프트웨어 위에서 굴러가고 있다 ⚙️</p>
+</header>
+
+<nav class="toc">
+  <a href="#c1">1-1 SW가 바꾼 세상</a>
+  <a href="#c2">1-2 SW의 관점으로 보기</a>
+  <a href="#c3">1-3 융합의 힘</a>
+  <a href="#quiz">📝 퀴즈</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════ 1-1 SW가 바꾼 세상 ═══════════ -->
+  <div class="card" id="c1">
+    <h2><span class="chip">1-1</span> 소프트웨어가 바꾼 세상 — 그리고 그 양면 🌗</h2>
+    <p class="lead">소프트웨어는 눈에 안 보인다. 그래서 <strong>얼마나 깊이 들어와 있는지</strong>도 눈치채기 어렵다.</p>
+    <p>스마트폰 앱만 소프트웨어가 아니다. 신호등, 엘리베이터, 버스 도착 안내, 편의점 계산대 — <mark>전기가 흐르는 거의 모든 것 뒤에 소프트웨어가 있다</mark>. 먼저 너의 평범한 하루에서 숨은 소프트웨어를 찾아보자.</p>
+
+    <div class="demo">
+      <div class="demo-title">🎮 하루 24시간 SW 사냥 <span class="badge-live">LIVE</span> · 발견 <strong id="huntScore">0 / 7</strong></div>
+      <p style="font-size:15px">각 순간을 클릭하면 그 뒤에 숨어 있던 소프트웨어가 드러난다!</p>
+      <div class="day-line" id="dayLine"></div>
+      <div class="demo-note" id="huntNote">가장 "소프트웨어와 관련 없어 보이는" 순간부터 눌러 보자.</div>
+    </div>
+
+    <h3>변화에는 양면이 있다 — 영향 "분석"의 기본기</h3>
+    <p>"편리해졌다"에서 멈추면 감상이고, <strong>빛과 그늘을 함께</strong> 보면 분석이다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>소프트웨어</th><th>빛 ☀️</th><th>그늘 🌑</th></tr>
+      <tr><td><strong>배달 앱</strong></td><td class="plus">주문 편리, 작은 가게도 판로 확보</td><td class="minus">수수료 부담, 배달 노동의 안전 문제</td></tr>
+      <tr><td><strong>추천 알고리즘</strong></td><td class="plus">내 취향의 콘텐츠를 알아서 발견</td><td class="minus">비슷한 것만 보게 되는 필터 버블</td></tr>
+      <tr><td><strong>키오스크</strong></td><td class="plus">대기 줄 감소, 인건비 절감</td><td class="minus">디지털 기기가 낯선 세대의 소외</td></tr>
+    </table></div>
+    <div class="tip"><span class="t">💡 분석의 공식</span>
+      어떤 소프트웨어든 <strong>"누가 편해졌고, 누가 어려워졌는가?"</strong>를 물어보라. 이 한 질문이 사례 나열을 <mark>사회 변화 분석</mark>으로 바꿔 준다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 1-2 SW의 관점 ═══════════ -->
+  <div class="card" id="c2">
+    <h2><span class="chip">1-2</span> 소프트웨어의 관점으로 세상 보기 👓</h2>
+    <p class="lead">소프트웨어 개발자의 눈에는 세상 모든 시스템이 <strong>세 칸짜리 기계</strong>로 보인다.</p>
+    <div class="flow">
+      <span class="f-step">📥 입력</span><span class="f-arrow">→</span>
+      <span class="f-step">🧠 처리</span><span class="f-arrow">→</span>
+      <span class="f-step">📤 출력</span>
+    </div>
+    <p>자동문은 "사람 감지(입력) → 열지 판단(처리) → 모터 작동(출력)"이고, 버스 도착 안내는 "GPS 위치(입력) → 도착 시간 계산(처리) → 전광판 표시(출력)"다. 이 <strong>렌즈</strong>가 생기면 세상의 문제를 소프트웨어로 풀 수 있는 문제로 <mark>번역</mark>할 수 있게 된다.</p>
+
+    <div class="demo">
+      <div class="demo-title">🎮 렌즈 장착 훈련 — 이 시스템의 그 단계는? <span class="badge-live">LIVE</span> · 점수 <strong id="lensScore">0 / 3</strong></div>
+      <div class="lens-grid" id="lensGrid"></div>
+      <div class="demo-note" id="lensNote">세 시스템을 전부 분해해 보자 — 입력·처리·출력이 눈에 보이기 시작한다!</div>
+    </div>
+
+    <h3>렌즈를 미래로 돌리면 — 예측이 된다</h3>
+    <p>지금 사람이 하고 있는 "입력→처리→출력"을 찾으면, 그것이 <strong>소프트웨어가 대신하게 될 미래</strong>다. 운전(도로 상황 입력 → 판단 → 핸들 조작)이 자율주행이 됐듯이.</p>
+    <div class="activity">
+      <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
+      <p><span class="blank">&nbsp;일상의 한 장면&nbsp;</span>이 소프트웨어를 만나면 — 입력은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 처리는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 출력은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>이 될 것이다.</p>
+      <p style="font-size:14px;color:var(--muted)">예: "급식 줄 서기"가 SW를 만나면 — 입력=오늘 식단과 학급 시간표, 처리=혼잡 예측, 출력=학급별 추천 배식 시간 알림</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 1-3 융합 ═══════════ -->
+  <div class="card" id="c3">
+    <h2><span class="chip">1-3</span> 융합 — 소프트웨어는 모든 학문의 부스터 🚀</h2>
+    <p class="lead">소프트웨어 혼자서는 아무 문제도 못 푼다. <strong>다른 분야를 만날 때</strong> 폭발한다.</p>
+    <div class="fusion-grid">
+      <div class="fusion"><div class="f-ico">🩺</div><h4>의료 × SW</h4><p>엑스레이 수만 장을 학습한 SW가 의사의 진단을 보조 — 놓치기 쉬운 병변을 표시</p></div>
+      <div class="fusion"><div class="f-ico">⚽</div><h4>스포츠 × SW</h4><p>비디오 판독(VAR)과 선수 움직임 추적 — 판정과 전술이 데이터 싸움으로</p></div>
+      <div class="fusion"><div class="f-ico">🌾</div><h4>농업 × SW</h4><p>스마트팜 — 온도·습도 센서와 자동 제어로 작물 환경을 24시간 관리</p></div>
+      <div class="fusion"><div class="f-ico">🎨</div><h4>예술 × SW</h4><p>생성형 AI와 미디어 아트 — 관객의 움직임에 반응하는 작품 (2단원 예고!)</p></div>
+    </div>
+
+    <h3>네 사례를 나란히 놓으면 — 공통 패턴이 보인다</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>분야</th><th>원래의 문제</th><th>소프트웨어가 맡은 역할</th></tr>
+      <tr><td>의료</td><td>사람 눈으로 수만 장을 다 볼 수 없음</td><td><strong>대량 데이터 처리</strong> + 패턴 인식</td></tr>
+      <tr><td>스포츠</td><td>순간 판정의 한계, 감에 의존한 전술</td><td><strong>정밀 측정</strong> + 데이터 분석</td></tr>
+      <tr><td>농업</td><td>사람이 24시간 지킬 수 없음</td><td><strong>자동 감시·제어</strong></td></tr>
+      <tr><td>예술</td><td>표현 수단의 한계</td><td><strong>새로운 표현 도구</strong> + 상호작용</td></tr>
+    </table></div>
+    <div class="tip"><span class="t">💡 융합의 공식</span>
+      <strong>그 분야의 전문 지식 + 소프트웨어의 강점(대량 처리·자동화·정밀 측정·상호작용)</strong> = 혼자서는 못 풀던 문제의 해결. 비교해 보면 어느 분야든 이 공식이 반복된다 — 그래서 <mark>어떤 진로를 가든 소프트웨어는 너의 부스터</mark>가 된다.
+    </div>
+    <div class="activity">
+      <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
+      <p>내 관심 분야 <span class="blank">&nbsp;&nbsp;&nbsp;</span>의 오래된 문제 하나 + 소프트웨어의 강점 <span class="blank">&nbsp;&nbsp;&nbsp;</span>를 조합하면 어떤 해결이 가능할까?</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 퀴즈 ═══════════ -->
+  <details class="acc" id="quiz">
+    <summary>📝 1단원 개념 확인 퀴즈</summary>
+    <div class="acc-body">
+      <p class="quiz-status" id="quizStatus"></p>
+      <div id="quizWrap"></div>
+    </div>
+  </details>
+
+</main>
+
+<footer><span class="series">소프트웨어와 생활 1/5</span> · 세상을 변화시키는 소프트웨어 · 단일 HTML · 오프라인 실행</footer>
+
+<script>
+'use strict';
+
+/* ==========================================================
+   데모 1 — 하루 24시간 SW 사냥
+   ========================================================== */
+(function () {
+  const MOMENTS = [
+    { t: '07:00', what: '⏰ 알람이 울려서 기상', sw: '수면 주기를 계산해 울릴 시각을 정하는 스케줄러 SW' },
+    { t: '07:40', what: '🚌 정류장에서 버스 기다리기', sw: '버스 GPS 위치로 도착 시간을 예측하는 SW' },
+    { t: '08:30', what: '🏫 교문에서 전자 출결', sw: '태그를 인식해 명단과 대조하고 학부모에게 알림을 보내는 SW' },
+    { t: '12:30', what: '🍚 급식 먹기', sw: '식수 인원 예측, 알레르기 식단 표시, 영양 계산 SW' },
+    { t: '16:00', what: '🏪 편의점에서 간식 결제', sw: '바코드 인식 → 가격 조회 → 재고 차감 → 매출 집계 SW' },
+    { t: '19:00', what: '🍗 저녁 배달 주문', sw: '주문-가게-라이더를 매칭하고 배달 경로를 최적화하는 SW' },
+    { t: '22:00', what: '📺 자기 전 영상 시청', sw: '시청 기록을 분석해 다음 영상을 고르는 추천 알고리즘' },
+  ];
+  let found = 0;
+  const wrap = document.getElementById('dayLine');
+  const note = document.getElementById('huntNote');
+  MOMENTS.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'moment';
+    b.innerHTML = '<span class="m-time">' + m.t + '</span>' +
+      '<span><span class="m-what">' + m.what + '</span><span class="m-sw">⚙️ ' + m.sw + '</span></span>' +
+      '<span class="m-mark">🔍</span>';
+    b.addEventListener('click', () => {
+      if (b.classList.contains('found')) return;
+      b.classList.add('found');
+      b.querySelector('.m-mark').textContent = '✓';
+      found++;
+      document.getElementById('huntScore').textContent = found + ' / 7';
+      if (found === 7) {
+        note.innerHTML = '🎉 <b>7개 전부 발견!</b> 앱을 "쓴" 순간뿐 아니라 급식·결제·출결처럼 <b>의식하지 못한 순간</b>에도 소프트웨어가 있었다. 이것이 "소프트웨어가 세상을 움직인다"의 진짜 의미다.';
+      } else {
+        note.innerHTML = '⚙️ 발견 ' + found + '개 — 계속 찾아보자. 힌트: 소프트웨어가 <b>없어 보이는</b> 순간일수록 반전이 크다!';
+      }
+    });
+    wrap.appendChild(b);
+  });
+})();
+
+/* ==========================================================
+   데모 2 — 입력→처리→출력 렌즈 게임
+   ========================================================== */
+(function () {
+  const CASES = [
+    { sys: '🚪 자동문', ask: '입력', opts: ['사람을 감지하는 센서의 신호', '문을 여는 모터의 움직임', '유리문의 재질'], ans: 0,
+      why: '시스템으로 들어오는 정보가 입력 — 센서가 "사람이 왔다"를 알려준다. 모터는 출력 쪽!' },
+    { sys: '🚌 버스 도착 안내', ask: '처리', opts: ['전광판에 "3분 후" 표시', '버스 GPS 위치로 도착 시간 계산', '버스 기사의 운전'], ans: 1,
+      why: '입력(GPS 위치)을 받아 계산·판단하는 일이 처리다. 전광판 표시는 출력!' },
+    { sys: '📸 얼굴 인식 출입', ask: '출력', opts: ['카메라가 얼굴을 촬영', '등록된 얼굴과 특징 비교', '문 잠금 해제 (또는 경고음)'], ans: 2,
+      why: '처리 결과가 세상으로 나가는 행동이 출력 — 문이 열리거나 경고가 울린다. 촬영=입력, 비교=처리.' },
+  ];
+  let score = 0, done = 0;
+  const grid = document.getElementById('lensGrid');
+  const note = document.getElementById('lensNote');
+  CASES.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'lens-item';
+    div.innerHTML = '<div class="li-q"><span class="li-tag">' + c.ask + '</span>' + c.sys + ' — 이 시스템의 <b>' + c.ask + '</b>은(는)?</div>' +
+      '<div class="li-btns">' + c.opts.map((o, i) => '<button data-i="' + i + '">' + ['①','②','③'][i] + ' ' + o + '</button>').join('') + '</div>' +
+      '<div class="li-mark"></div>';
+    div.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        div.querySelectorAll('button').forEach(x => x.disabled = true);
+        const right = Number(b.dataset.i) === c.ans;
+        if (right) score++;
+        done++;
+        b.classList.add(right ? 'right' : 'wrong');
+        if (!right) div.querySelectorAll('button')[c.ans].classList.add('right');
+        div.classList.add(right ? 'done-r' : 'done-w');
+        div.querySelector('.li-mark').textContent = (right ? '✓ 정답! ' : '✗ ') + c.why;
+        document.getElementById('lensScore').textContent = score + ' / 3';
+        if (done === 3) {
+          note.innerHTML = score === 3
+            ? '🏆 렌즈 장착 완료! 이제 어떤 시스템을 봐도 <b>입력→처리→출력</b>이 자동으로 보일 것이다.'
+            : '📖 <b>' + score + '/3</b> — 기억하자: 들어오는 정보=입력, 계산·판단=처리, 세상으로 나가는 행동=출력.';
+        }
+      });
+    });
+    grid.appendChild(div);
+  });
+})();
+
+/* ==========================================================
+   퀴즈 엔진 (시리즈 공통)
+   ========================================================== */
+const QUIZ = [
+  { q: '키오스크 도입의 영향을 "분석"한 것으로 가장 알맞은 것은?',
+    opts: ['줄이 줄어서 좋다', '기계가 많아져서 신기하다', '대기 시간은 줄었지만 디지털 기기가 낯선 세대는 주문이 어려워졌다', '요즘 식당은 다 키오스크를 쓴다'], ans: 2,
+    exp: '분석 = 빛과 그늘을 함께 보는 것. "누가 편해졌고 누가 어려워졌는가?"에 답한 것은 ③뿐이다. 나머지는 감상이나 사실 나열.' },
+  { q: '자동문 시스템에서 "처리"에 해당하는 것은?',
+    opts: ['센서가 사람을 감지한다', '감지 신호를 받아 문을 열지 판단한다', '모터가 문을 연다', '유리가 투명하다'], ans: 1,
+    exp: '입력(센서 감지) → 처리(판단) → 출력(모터 작동). 계산하고 판단하는 가운데 단계가 처리다.' },
+  { q: '"소프트웨어 관점으로 미래를 예측한다"에 가장 가까운 것은?',
+    opts: ['미래에는 로봇이 많아질 것 같다고 상상한다', '지금 사람이 하는 입력→처리→출력을 찾아, 소프트웨어가 대신할 모습을 그려 본다', '유명인의 미래 전망 영상을 시청한다', '점을 봐서 미래를 알아본다'], ans: 1,
+    exp: '운전(상황 입력→판단→조작)이 자율주행이 됐듯, 사람이 수행 중인 정보 처리 과정을 찾으면 소프트웨어화될 미래가 보인다 — 이것이 SW 관점의 예측이다.' },
+  { q: '의료·스포츠·농업·예술의 소프트웨어 융합 사례에서 발견되는 공통 패턴은?',
+    opts: ['소프트웨어가 그 분야 전문가를 완전히 대체한다', '분야의 전문 지식에 SW의 강점(대량 처리·자동화·정밀 측정)이 결합해 문제를 푼다', '컴퓨터가 비싼 분야일수록 융합이 잘 된다', '융합은 예술 분야에서만 일어난다'], ans: 1,
+    exp: '네 사례 모두 "전문 지식 + SW의 강점"의 조합이었다. SW는 대체가 아니라 부스터 — 그 분야가 못 풀던 문제를 함께 푼다.' },
+  { q: '추천 알고리즘 때문에 비슷한 콘텐츠만 계속 보게 되는 현상을 부르는 말은?',
+    opts: ['필터 버블', '스마트팜', '오픈 소스', '디지털 소외'], ans: 0,
+    exp: '내 취향 데이터로 걸러진(filter) 거품(bubble) 안에 갇히는 현상 — 편리함의 그늘이다. 디지털 소외는 키오스크 사례처럼 기기 접근이 어려운 문제를 가리킨다.' },
+];
+
+let answered = 0;
+(function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  QUIZ.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.innerHTML = '<span class="qnum">' + (qi + 1) + '</span>' + item.q;
+    div.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    const exp = document.createElement('div');
+    exp.className = 'q-exp';
+    exp.innerHTML = '💡 ' + item.exp;
+    item.opts.forEach((label, oi) => {
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = ['①', '②', '③', '④'][oi] + ' ' + label;
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        opts.querySelectorAll('.q-opt').forEach(o => o.disabled = true);
+        if (oi === item.ans) { b.classList.add('correct'); b.textContent += '  ✅ 정답!'; }
+        else { b.classList.add('wrong'); b.textContent += '  ❌'; opts.children[item.ans].classList.add('correct'); }
+        exp.classList.add('show');
+        answered++;
+        updateStatus();
+      });
+      opts.appendChild(b);
+    });
+    div.appendChild(opts);
+    div.appendChild(exp);
+    wrap.appendChild(div);
+  });
+  updateStatus();
+})();
+function updateStatus() {
+  const el = document.getElementById('quizStatus');
+  el.innerHTML = answered >= QUIZ.length
+    ? '🎉 <b>퀴즈 완료!</b> 렌즈를 장착했다면 다음은 2단원 — 직접 만드는 피지컬 컴퓨팅!'
+    : '진행: <b>' + answered + '</b> / ' + QUIZ.length + ' 문항 — 보기를 클릭하면 바로 채점된다!';
+}
+</script>
+</body>
+</html>
