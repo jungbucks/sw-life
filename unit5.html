@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어와 생활 5단원 — 가치를 창출하는 소프트웨어</title>
+<style>
+/* ==========================================================
+   소프트웨어와 생활 시리즈 공통 (DESIGN_SPEC.md) — 5단원: 그린
+   워크북 성격 절반: 데과 unit4의 입력+복사 UX 계승
+   ========================================================== */
+:root {
+  /* 단원 액센트 — 5단원 그린 */
+  --ua: #16A34A;
+  --ua-dark: #15803D;
+  --ua-soft: #EAF7EE;
+  /* 중립 (웜 아이보리 무드) */
+  --bg: #FBFAF6;
+  --card: #FFFFFF;
+  --ink: #292524;
+  --muted: #6B6459;
+  --line: #EAE6DE;
+  /* 시리즈 5색 (고정 순서 — DESIGN_SPEC 검증 완료) */
+  --c1: #0D9488; --c2: #EA580C; --c3: #2563EB; --c4: #DB2777; --c5: #16A34A;
+  /* 시맨틱 */
+  --ok: #0E9F6E; --bad: #DC2626;
+  --radius: 18px;
+  --shadow: 0 3px 16px rgba(41, 37, 36, .07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink);
+  line-height: 1.75; font-size: 16.5px;
+}
+button:focus-visible, summary:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--ua); outline-offset: 2px; }
+
+/* ---------- 헤더: 회로 배선 모티프 ---------- */
+header {
+  position: relative; text-align: center;
+  padding: 56px 20px 34px; overflow: hidden;
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+header::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--c1), var(--c1)) 6% 26% / 120px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c1) 98%, transparent) 3.5% 25% / 10px 10px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 88% 34% / 100px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c2) 98%, transparent) 95.5% 33% / 10px 10px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 10% 74% / 90px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c3) 98%, transparent) 17% 73% / 10px 10px no-repeat,
+    linear-gradient(var(--c4), var(--c4)) 90% 78% / 110px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c4) 98%, transparent) 83.5% 77% / 10px 10px no-repeat,
+    linear-gradient(var(--c5), var(--c5)) 50% 12% / 80px 2px no-repeat,
+    radial-gradient(circle 4px, var(--c5) 98%, transparent) 54% 11% / 10px 10px no-repeat;
+  opacity: .3;
+}
+.unit-badge {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .1em;
+  color: var(--ua-dark); background: var(--ua-soft); border: 1px solid var(--ua);
+  padding: 5px 16px; border-radius: 99px; margin-bottom: 16px;
+}
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.25; }
+h1 .ua { color: var(--ua-dark); }
+.sub { color: var(--muted); margin-top: 10px; font-size: 17px; }
+
+/* ---------- 미니 목차 ---------- */
+nav.toc {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  padding: 14px 20px; background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+}
+nav.toc a {
+  font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none;
+  padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--line);
+  transition: color .15s, border-color .15s, background .15s;
+}
+nav.toc a:hover { color: var(--ua-dark); border-color: var(--ua); background: var(--ua-soft); }
+
+/* ---------- 본문 & 카드 ---------- */
+main { max-width: 940px; margin: 0 auto; padding: 30px 20px 80px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 30px 30px 26px; margin-bottom: 26px;
+  scroll-margin-top: 70px;
+}
+h2 { font-size: 24px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+h2 .chip { font-size: 12px; font-weight: 800; color: #fff; background: var(--ua); border-radius: 8px; padding: 3px 10px; flex-shrink: 0; }
+h3 { font-size: 18px; font-weight: 800; margin: 26px 0 8px; }
+h3::before { content: '🚀 '; }
+p { margin: 8px 0; }
+.lead { color: var(--muted); font-size: 15.5px; margin-bottom: 12px; }
+strong { font-weight: 800; }
+mark { background: linear-gradient(transparent 55%, #BEE8CB 55%); color: inherit; padding: 0 2px; font-weight: 700; }
+ul.list, ol.list { padding-left: 24px; margin: 8px 0; }
+ul.list li, ol.list li { margin: 5px 0; }
+
+.tip, .warn { border-radius: 14px; padding: 15px 20px; margin: 16px 0; font-size: 15.5px; border: 1.5px solid; }
+.tip { background: var(--ua-soft); border-color: var(--ua); }
+.warn { background: #FDF2F2; border-color: #F5C0C0; }
+.tip .t, .warn .t { font-weight: 900; display: block; margin-bottom: 4px; }
+.tip .t { color: var(--ua-dark); }
+.warn .t { color: var(--bad); }
+
+/* ---------- 표 ---------- */
+.tbl-wrap { overflow-x: auto; margin: 14px 0; border-radius: 12px; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 480px; background: #fff; font-size: 15px; }
+th { background: var(--ink); color: #fff; font-weight: 800; padding: 10px 14px; text-align: left; font-size: 14px; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+
+/* ---------- 사례 카드 ---------- */
+.fusion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin: 14px 0; }
+.fusion { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.fusion .f-ico { font-size: 24px; margin-bottom: 6px; }
+.fusion h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.fusion p { font-size: 13.5px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+/* ---------- 데모/버튼 ---------- */
+.demo { background: #F6F4EE; border: 2px dashed #D8D2C6; border-radius: 16px; padding: 22px; margin: 18px 0; }
+.demo-title { font-weight: 900; font-size: 15px; margin-bottom: 12px; }
+.btn {
+  font-family: inherit; font-size: 14.5px; font-weight: 800;
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  border: none; color: #fff; background: var(--ua);
+  box-shadow: 0 3px 10px rgba(22, 163, 74, .3);
+  transition: transform .15s, filter .15s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.demo-note {
+  margin-top: 14px; font-size: 15px; font-weight: 600;
+  background: #fff; border-radius: 12px; padding: 12px 16px;
+  border-left: 4px solid var(--ua); min-height: 46px;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- 워크시트 폼 (데과 unit4 계승) ---------- */
+.ws { display: grid; gap: 12px; margin: 14px 0; }
+.ws label { font-size: 14px; font-weight: 800; display: block; margin-bottom: 4px; }
+.ws input, .ws textarea {
+  width: 100%; font-family: inherit; font-size: 15px; color: var(--ink);
+  background: #fff; border: 1.5px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; transition: border-color .15s;
+}
+.ws textarea { min-height: 60px; resize: vertical; line-height: 1.6; }
+.ws input:focus, .ws textarea:focus { border-color: var(--ua); outline: none; }
+.ws-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .ws-row2 { grid-template-columns: 1fr; } }
+
+footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
+footer .series { font-weight: 800; color: var(--ua-dark); }
+
+/* ---------- 퀴즈 (시리즈 공통 엔진) ---------- */
+details.acc { border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); margin-bottom: 18px; overflow: hidden; }
+details.acc summary { cursor: pointer; list-style: none; padding: 20px 26px; font-weight: 900; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '▼'; margin-left: auto; font-size: 12px; color: var(--ua); transition: transform .25s; }
+details.acc[open] summary::after { transform: rotate(180deg); }
+details.acc summary:hover { background: var(--ua-soft); }
+details.acc .acc-body { padding: 4px 26px 26px; }
+.q-item { margin-bottom: 24px; }
+.q-text { font-weight: 800; margin-bottom: 10px; }
+.q-text .qnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; background: var(--ua); color: #fff; font-size: 13px; font-weight: 900; }
+.q-opts { display: grid; gap: 8px; }
+.q-opt { font-family: inherit; text-align: left; font-size: 15px; font-weight: 600; padding: 11px 16px; border-radius: 12px; cursor: pointer; border: 2px solid var(--line); background: #fff; color: var(--ink); transition: all .18s; }
+.q-opt:hover:not(:disabled) { border-color: var(--ua); background: var(--ua-soft); transform: translateX(4px); }
+.q-opt.correct { border-color: var(--ok); background: #F0FBF7; font-weight: 800; }
+.q-opt.wrong { border-color: var(--bad); background: #FDF2F2; animation: shake .35s; }
+.q-opt:disabled { cursor: default; opacity: .75; }
+.q-opt.correct:disabled, .q-opt.wrong:disabled { opacity: 1; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.q-exp { display: none; margin-top: 10px; font-size: 14.5px; background: var(--ua-soft); border: 1.5px solid var(--ua); border-radius: 12px; padding: 12px 16px; }
+.q-exp.show { display: block; animation: fadeUp .3s both; }
+.quiz-status { font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 16px; }
+.quiz-status b { color: var(--ua-dark); }
+
+@media (max-width: 640px) {
+  body { font-size: 15.5px; }
+  .card { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="unit-badge">소프트웨어와 생활 · 5단원 / 5</span>
+  <h1>가치를 창출하는 <span class="ua">소프트웨어</span></h1>
+  <p class="sub">세상의 불편을 발견하고, 소프트웨어로 풀어 가치를 만들자 🌱</p>
+</header>
+
+<nav class="toc">
+  <a href="#c1">5-1 스타트업이란</a>
+  <a href="#c2">5-2 요구 분석</a>
+  <a href="#c3">5-3 아이디어 캔버스</a>
+  <a href="#c4">5-4 3관점 평가·제출</a>
+  <a href="#quiz">📝 퀴즈</a>
+</nav>
+
+<main>
+
+  <div class="warn" style="margin-top:0"><span class="t">⚠️ 워크북 사용법</span>
+    이 페이지의 ✍️ 입력은 <strong>저장되지 않는다</strong>(공용 PC 보호). 작성 후 맨 아래 <strong>[결과 요약 복사]</strong>로 클립보드에 담아 패들렛·구글 문서에 붙여넣어 보관하자.
+  </div>
+
+  <!-- ═══════════ 5-1 스타트업이란 ═══════════ -->
+  <div class="card" id="c1">
+    <h2><span class="chip">5-1</span> 스타트업 — 불편이 가치가 되는 순간 💡</h2>
+    <p class="lead">스타트업 = 세상의 불편을 소프트웨어로 풀어 <strong>새로운 가치</strong>를 만드는 작은 팀.</p>
+    <p>거창한 발명이 아니다. 성공한 소프트웨어 스타트업들의 출발점은 전부 <mark>"이거 왜 이렇게 불편하지?"</mark>였다:</p>
+    <div class="fusion-grid">
+      <div class="fusion"><div class="f-ico">🍗</div><h4>음식 배달 중개</h4><p>불편: 전단지 뒤져 전화 주문, 메뉴판은 어디에? → SW: 한 앱에서 검색·주문·결제</p></div>
+      <div class="fusion"><div class="f-ico">💸</div><h4>간편 송금</h4><p>불편: 공인인증서와 보안카드의 미로 → SW: 몇 번의 터치로 송금 끝</p></div>
+      <div class="fusion"><div class="f-ico">📦</div><h4>동네 중고 거래</h4><p>불편: 낯선 사람과의 거래 불신 → SW: 동네 인증·매너 평가로 신뢰 장치</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>공통 패턴</th><th>내용</th></tr>
+      <tr><td>① 오래된 불편</td><td>누구나 겪지만 "원래 그런 것"이라 여기던 것</td></tr>
+      <tr><td>② SW의 강점 결합</td><td>중개·자동화·신뢰 장치 — 1단원 "융합의 공식"과 같은 구조!</td></tr>
+      <tr><td>③ 새 가치</td><td>시간 절약, 새 일자리, 새로운 연결</td></tr>
+    </table></div>
+  </div>
+
+  <!-- ═══════════ 5-2 요구 분석 ═══════════ -->
+  <div class="card" id="c2">
+    <h2><span class="chip">5-2</span> 사용자 요구 분석 — 아이디어보다 사람 먼저 🎤</h2>
+    <p class="lead">스타트업 프로젝트의 순서: <strong>불편 발견 → 요구 분석 → 아이디어 → 최소 기능 제작 → 검증.</strong> 두 번째 단계가 승부처다.</p>
+    <p>불편을 겪는 <strong>진짜 사람</strong>을 인터뷰하자. 네 가지만 물으면 된다:</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>인터뷰 질문</th><th>알아내는 것</th></tr>
+      <tr><td>① 누가 겪는 불편인가요?</td><td>타깃 사용자</td></tr>
+      <tr><td>② 언제, 어디서 겪나요?</td><td>사용 상황(컨텍스트)</td></tr>
+      <tr><td>③ 왜 불편한가요? 얼마나 자주?</td><td>문제의 크기 (가끔 겪는 사소함이면 재검토)</td></tr>
+      <tr><td>④ 지금은 어떻게 버티고 있나요?</td><td>경쟁 상대 = 현재의 임시방편</td></tr>
+    </table></div>
+    <div class="warn"><span class="t">🚨 오개념 주의보 — 내가 만들고 싶은 것 ≠ 사용자가 필요한 것</span>
+      요구 분석 없이 만든 소프트웨어가 스타트업 실패 원인 1순위다. 멋진 기능을 상상하기 전에, <mark>불편을 겪는 사람의 입에서 나온 말</mark>을 먼저 모아라 — 그것이 요구(needs)다.
+    </div>
+    <div class="ws">
+      <div><label for="wsUser">✍️ 우리 팀의 타깃 사용자</label>
+      <input id="wsUser" maxlength="60" placeholder="예: 아침마다 버스 놓치는 우리 학교 통학생"></div>
+      <div><label for="wsPain">✍️ 인터뷰로 확인한 불편 (사용자의 말로)</label>
+      <textarea id="wsPain" maxlength="200" placeholder='예: "버스 앱은 있는데, 정문에서 정류장까지 뛰는 시간까지 계산해 주진 않아요"'></textarea></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 5-3 아이디어 캔버스 ═══════════ -->
+  <div class="card" id="c3">
+    <h2><span class="chip">5-3</span> 아이디어 캔버스 — 한 장으로 설계하기 🗺️</h2>
+    <p class="lead">요구를 확인했다면, 팀이 <strong>협력해서</strong> 한 장짜리 설계도를 채운다.</p>
+    <div class="ws">
+      <div><label for="wsProblem">✍️ 문제 (한 문장)</label>
+      <input id="wsProblem" maxlength="80" placeholder="예: 통학생이 교문→정류장 이동 시간을 계산 못해 버스를 놓친다"></div>
+      <div><label for="wsSolution">✍️ 해결 아이디어 (한 문장)</label>
+      <input id="wsSolution" maxlength="80" placeholder="예: 교문 기준 '지금 뛰면 탈 수 있는 버스' 알림 앱"></div>
+      <div><label for="wsFeatures">✍️ 핵심 기능 3개만</label>
+      <textarea id="wsFeatures" maxlength="200" placeholder="① 버스 도착-도보 시간 비교 ② 지금 출발 알림 ③ 단골 노선 등록"></textarea></div>
+      <div><label for="wsRoles">✍️ 역할 분담 (누가 무엇을 — 협력 설계)</label>
+      <textarea id="wsRoles" maxlength="200" placeholder="예: 민준=화면 설계, 서연=도착 데이터 조사, 지훈=엔트리 구현, 전원=검증 인터뷰"></textarea></div>
+    </div>
+    <div class="tip"><span class="t">💡 왜 기능을 3개로 제한하나 — MVP</span>
+      전부 만들기 전에 <strong>핵심만 담은 최소 기능 제품(MVP)</strong>으로 사용자 반응부터 검증한다. 기능 10개짜리 미완성보다 <mark>기능 3개짜리 완성</mark>이 배우는 게 많다 — 실제 스타트업의 철칙이다.
+    </div>
+  </div>
+
+  <!-- ═══════════ 5-4 3관점 평가 ═══════════ -->
+  <div class="card" id="c4">
+    <h2><span class="chip">5-4</span> 세 개의 거울 — 사회적·기능적·윤리적 평가 🪞</h2>
+    <p class="lead">만들었다고 끝이 아니다. 개발한 소프트웨어를 <strong>세 관점의 거울</strong>에 비춰 보자.</p>
+    <div class="ws">
+      <div><label for="wsSocial">🌏 사회적 관점 — 누구에게 이롭고, 누구에게 불리해질 수 있는가?</label>
+      <textarea id="wsSocial" maxlength="200" placeholder="예: 통학생에게 이로움 / 스마트폰 없는 학생은 소외될 수 있음 → 교문 전광판 병행"></textarea></div>
+      <div><label for="wsFunc">⚙️ 기능적 관점 — 핵심 기능이 약속대로 작동하는가? (검증 방법 포함)</label>
+      <textarea id="wsFunc" maxlength="200" placeholder="예: 실제 등교 시간에 10명이 사용 → 알림 정확도와 놓친 버스 수 기록"></textarea></div>
+      <div><label for="wsEthic">⚖️ 윤리적 관점 — 개인정보·편향·과의존 요소는 없는가?</label>
+      <textarea id="wsEthic" maxlength="200" placeholder="예: 위치는 기기에서만 계산(서버 전송 없음), 알림은 등교 시간대만"></textarea></div>
+    </div>
+    <div class="tip"><span class="t">💡 가치의 완성은 평가다</span>
+      3단원의 데이터 윤리, 4단원의 "모델의 한계"와 같은 정신이다 — <strong>내가 만든 것이 세상에 낳을 결과까지 살피는 것</strong>이 소프트웨어로 가치를 만드는 사람의 마지막 책임이다.
+    </div>
+
+    <h3>제출 — 프로젝트 요약 만들기</h3>
+    <div class="ws ws-row2">
+      <div><label for="wsTeam">팀명</label><input id="wsTeam" maxlength="20" placeholder="버스런"></div>
+      <div><label for="wsNames">팀원</label><input id="wsNames" maxlength="60" placeholder="김민준, 이서연, 박지훈"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="copyBtn">📋 결과 요약 복사 (제출용)</button>
+    </div>
+    <div class="demo-note" id="copyNote">5-2~5-4의 ✍️ 칸을 채운 뒤 누르면 제출용 텍스트가 클립보드에 담긴다. 패들렛·구글 문서에 붙여넣어 제출!</div>
+  </div>
+
+  <!-- ═══════════ 퀴즈 ═══════════ -->
+  <details class="acc" id="quiz">
+    <summary>📝 5단원 개념 확인 퀴즈</summary>
+    <div class="acc-body">
+      <p class="quiz-status" id="quizStatus"></p>
+      <div id="quizWrap"></div>
+    </div>
+  </details>
+
+</main>
+
+<footer><span class="series">소프트웨어와 생활 5/5</span> · 가치를 창출하는 소프트웨어 · 단일 HTML · 오프라인 실행</footer>
+
+<script>
+'use strict';
+
+/* ==========================================================
+   제출 — 결과 요약 복사 (데과 unit4 패턴)
+   ========================================================== */
+(function () {
+  const btn = document.getElementById('copyBtn');
+  const note = document.getElementById('copyNote');
+  const v = id => (document.getElementById(id).value.trim() || '(미작성)');
+  function buildText() {
+    const d = new Date(), p = n => String(n).padStart(2, '0');
+    return [
+      '[소프트웨어 스타트업 프로젝트 요약]',
+      '팀: ' + v('wsTeam') + ' (' + v('wsNames') + ')',
+      '1. 타깃 사용자: ' + v('wsUser'),
+      '2. 확인한 불편: ' + v('wsPain'),
+      '3. 문제: ' + v('wsProblem'),
+      '4. 해결 아이디어: ' + v('wsSolution'),
+      '5. 핵심 기능 3: ' + v('wsFeatures'),
+      '6. 역할 분담: ' + v('wsRoles'),
+      '7. 사회적 평가: ' + v('wsSocial'),
+      '8. 기능적 평가: ' + v('wsFunc'),
+      '9. 윤리적 평가: ' + v('wsEthic'),
+      '작성일: ' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()),
+    ].join('\n');
+  }
+  function fallbackCopy(t) {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove(); return ok;
+  }
+  btn.addEventListener('click', () => {
+    const txt = buildText();
+    const done = ok => {
+      note.innerHTML = ok
+        ? '✅ <b>복사 완료!</b> 붙여넣어 제출하자. (미작성 칸은 "(미작성)"으로 표시 — 채우고 다시 복사해도 된다)'
+        : '❌ 복사 실패 — 내용을 직접 드래그해 복사하자.';
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(() => done(true), () => done(fallbackCopy(txt)));
+    } else done(fallbackCopy(txt));
+  });
+})();
+
+/* ==========================================================
+   퀴즈 엔진 (시리즈 공통)
+   ========================================================== */
+const QUIZ = [
+  { q: '소프트웨어 스타트업의 출발점으로 가장 알맞은 것은?',
+    opts: ['최신 기술을 먼저 고른다', '세상의 오래된 불편을 발견한다', '회사 이름을 멋지게 짓는다', '투자금을 먼저 모은다'], ans: 1,
+    exp: '배달·송금·중고거래 전부 "이거 왜 불편하지?"에서 출발했다. 기술과 돈은 불편(문제)이 확인된 다음의 이야기다.' },
+  { q: '아이디어 구상보다 사용자 요구 분석을 먼저 하는 이유는?',
+    opts: ['시간이 남아서', '내가 만들고 싶은 것과 사용자가 필요한 것이 다를 수 있어서', '인터뷰가 재미있어서', '선생님이 시켜서'], ans: 1,
+    exp: '요구 분석 없는 개발이 스타트업 실패 1순위. 사용자의 입에서 나온 불편이 진짜 요구(needs)다.' },
+  { q: '핵심 기능 3개만 담은 최소 기능 제품을 부르는 말은?',
+    opts: ['MVP', 'CPU', 'URL', 'GPS'], ans: 0,
+    exp: 'MVP(Minimum Viable Product) — 전부 만들기 전에 핵심만으로 사용자 반응을 검증한다. 기능 3개짜리 완성이 10개짜리 미완성을 이긴다.' },
+  { q: '"스마트폰이 없는 학생은 이 앱의 혜택에서 소외될 수 있다"는 어떤 관점의 평가인가?',
+    opts: ['기능적 관점', '사회적 관점', '윤리적 관점 중 개인정보', '경제적 관점'], ans: 1,
+    exp: '누구에게 이롭고 누구에게 불리한가 — 사회적 관점이다. 기능적=약속대로 작동하나, 윤리적=개인정보·편향·과의존 점검.' },
+  { q: '개발한 소프트웨어의 윤리적 평가에서 점검할 것이 아닌 것은?',
+    opts: ['개인정보를 필요 이상으로 모으지 않는가', '특정 집단에게 불리한 편향이 없는가', '사용자를 과도하게 붙잡아 두는 중독 요소가 없는가', '앱 아이콘이 유행하는 디자인인가'], ans: 3,
+    exp: '윤리 점검 3종 = 개인정보·편향·과의존. 아이콘 유행은 취향의 문제다 — 3단원 데이터 윤리와 같은 정신!' },
+];
+
+let answered = 0;
+(function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  QUIZ.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.innerHTML = '<span class="qnum">' + (qi + 1) + '</span>' + item.q;
+    div.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    const exp = document.createElement('div');
+    exp.className = 'q-exp';
+    exp.innerHTML = '💡 ' + item.exp;
+    item.opts.forEach((label, oi) => {
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = ['①', '②', '③', '④'][oi] + ' ' + label;
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        opts.querySelectorAll('.q-opt').forEach(o => o.disabled = true);
+        if (oi === item.ans) { b.classList.add('correct'); b.textContent += '  ✅ 정답!'; }
+        else { b.classList.add('wrong'); b.textContent += '  ❌'; opts.children[item.ans].classList.add('correct'); }
+        exp.classList.add('show');
+        answered++;
+        updateStatus();
+      });
+      opts.appendChild(b);
+    });
+    div.appendChild(opts);
+    div.appendChild(exp);
+    wrap.appendChild(div);
+  });
+  updateStatus();
+})();
+function updateStatus() {
+  const el = document.getElementById('quizStatus');
+  el.innerHTML = answered >= QUIZ.length
+    ? '🎉 <b>시리즈 완주!</b> 이제 남은 것은 너의 첫 프로젝트 — 세상의 불편을 찾아 나서자! 🌱'
+    : '진행: <b>' + answered + '</b> / ' + QUIZ.length + ' 문항 — 보기를 클릭하면 바로 채점된다!';
+}
+</script>
+</body>
+</html>

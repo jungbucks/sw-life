@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어와 생활 — 5단원 학습 시리즈</title>
+<style>
+:root {
+  --bg: #FBFAF6; --card: #FFFFFF; --ink: #292524; --muted: #6B6459; --line: #EAE6DE;
+  --c1: #0D9488; --c2: #EA580C; --c3: #2563EB; --c4: #DB2777; --c5: #16A34A;
+  --shadow: 0 3px 16px rgba(41, 37, 36, .07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.7; font-size: 16.5px;
+  min-height: 100vh;
+}
+a:focus-visible { outline: 3px solid var(--c1); outline-offset: 2px; }
+header {
+  position: relative; text-align: center; padding: 72px 20px 40px; overflow: hidden;
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+header::before { /* 회로 배선 모티프 */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--c1), var(--c1)) 6% 26% / 130px 2px no-repeat,
+    radial-gradient(circle 5px, var(--c1) 98%, transparent) 3% 25% / 12px 12px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 90% 32% / 110px 2px no-repeat,
+    radial-gradient(circle 5px, var(--c2) 98%, transparent) 96.5% 31% / 12px 12px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 8% 76% / 100px 2px no-repeat,
+    radial-gradient(circle 5px, var(--c3) 98%, transparent) 15.5% 75% / 12px 12px no-repeat,
+    linear-gradient(var(--c4), var(--c4)) 92% 80% / 120px 2px no-repeat,
+    radial-gradient(circle 5px, var(--c4) 98%, transparent) 84% 79% / 12px 12px no-repeat,
+    linear-gradient(var(--c5), var(--c5)) 50% 10% / 90px 2px no-repeat,
+    radial-gradient(circle 5px, var(--c5) 98%, transparent) 54.5% 9% / 12px 12px no-repeat;
+  opacity: .32;
+}
+.eyebrow {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .12em;
+  color: var(--muted); background: var(--bg); border: 1px solid var(--line);
+  padding: 5px 16px; border-radius: 99px; margin-bottom: 16px;
+}
+h1 { font-size: clamp(32px, 6vw, 50px); font-weight: 900; letter-spacing: -.02em; }
+.sub { color: var(--muted); margin-top: 10px; font-size: 17px; }
+main { max-width: 760px; margin: 0 auto; padding: 36px 20px 60px; }
+.unit {
+  display: flex; align-items: center; gap: 18px;
+  background: var(--card); border: 1px solid var(--line); border-left: 6px solid var(--ua);
+  border-radius: 16px; box-shadow: var(--shadow);
+  padding: 22px 24px; margin-bottom: 14px; text-decoration: none; color: var(--ink);
+  transition: transform .15s, box-shadow .15s;
+}
+.unit:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(41,37,36,.12); }
+.unit .no {
+  width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 21px; font-weight: 900; color: #fff; background: var(--ua);
+}
+.unit h2 { font-size: 19px; font-weight: 900; margin-bottom: 2px; }
+.unit p { font-size: 14px; color: var(--muted); margin: 0; }
+.unit .go { margin-left: auto; font-weight: 900; color: var(--ua); font-size: 18px; flex-shrink: 0; }
+.u1 { --ua: #0D9488; } .u2 { --ua: #EA580C; } .u3 { --ua: #2563EB; } .u4 { --ua: #DB2777; } .u5 { --ua: #16A34A; }
+.note { text-align: center; font-size: 14px; color: var(--muted); margin-top: 22px; }
+.note a { color: var(--muted); font-weight: 700; }
+footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 20px; }
+@media (max-width: 520px) { .unit { padding: 16px; gap: 12px; } .unit .no { width: 44px; height: 44px; font-size: 18px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <span class="eyebrow">고등학교 · 소프트웨어와 생활</span>
+  <h1>소프트웨어와 생활 학습 시리즈</h1>
+  <p class="sub">이해하고, 만들고, 분석하고, 실험하고, 창업하라 — 5단원 ⚙️</p>
+</header>
+<main>
+  <a class="unit u1" href="unit1.html">
+    <span class="no">1</span>
+    <span><h2>세상을 변화시키는 소프트웨어</h2><p>하루 24시간 SW 사냥 · 입력→처리→출력 렌즈 · 융합의 공식</p></span>
+    <span class="go">→</span>
+  </a>
+  <a class="unit u2" href="unit2.html">
+    <span class="no">2</span>
+    <span><h2>창작을 지원하는 소프트웨어</h2><p>피지컬 컴퓨팅 조립 시뮬레이터 · 미디어 아트 체험 · 웨어러블과 공유</p></span>
+    <span class="go">→</span>
+  </a>
+  <a class="unit u3" href="unit3.html">
+    <span class="no">3</span>
+    <span><h2>현상을 분석하는 소프트웨어</h2><p>편향 없는 수집 · y축 왜곡 그래프 · 데이터 윤리 판정 게임</p></span>
+    <span class="go">→</span>
+  </a>
+  <a class="unit u4" href="unit4.html">
+    <span class="no">4</span>
+    <span><h2>모의 실험하는 소프트웨어</h2><p>감염 확산 시뮬레이터 — 개체·규칙·파라미터로 세계를 실험</p></span>
+    <span class="go">→</span>
+  </a>
+  <a class="unit u5" href="unit5.html">
+    <span class="no">5</span>
+    <span><h2>가치를 창출하는 소프트웨어</h2><p>스타트업 워크북 — 요구 분석 → 아이디어 캔버스 → 3관점 평가</p></span>
+    <span class="go">→</span>
+  </a>
+  <p class="note">각 단원은 파일 하나로 완결 — 내려받아 더블클릭해도 똑같이 동작합니다 (오프라인 OK)<br>
+  데이터가 더 궁금하다면 자매 시리즈: <a href="https://jungbucks.github.io/data-science/" target="_blank" rel="noopener">데이터 과학 학습 시리즈</a></p>
+</main>
+<footer>소프트웨어와 생활 시리즈 · 순수 HTML/CSS/JS · 외부 요청 0</footer>
+</body>
+</html>
