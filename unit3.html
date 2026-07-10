@@ -179,7 +179,7 @@ tr:last-child td { border-bottom: none; }
 }
 .activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
 .activity p { font-size: 15.5px; margin: 4px 0; }
-.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+.activity .blank { display: inline-block; font-family: inherit; font-size: 15px; color: var(--ink); background: transparent; border: none; border-bottom: 2px solid var(--ua); min-width: 90px; width: 10em; max-width: 100%; padding: 2px 6px; text-align: center; } .activity .blank:focus { outline: none; background: #fff; border-radius: 6px 6px 0 0; }
 
 footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
 footer .series { font-weight: 800; color: var(--ua-dark); }
@@ -255,7 +255,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     </table></div>
     <div class="activity">
       <div class="a-label">✍️ 활용 방안 구상 (수업 활동)</div>
-      <p>우리 학교의 현상 <span class="blank">&nbsp;&nbsp;&nbsp;</span>이 궁금하다 → 필요한 데이터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span> (위 플랫폼에서 검색해 보기!) → 분석 결과는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>에게 전달하면 바뀔 수 있다</p>
+      <p>우리 학교의 현상 <input class="blank" maxlength="60" aria-label="빈칸 입력">이 궁금하다 → 필요한 데이터는 <input class="blank" maxlength="60" aria-label="빈칸 입력"> (위 플랫폼에서 검색해 보기!) → 분석 결과는 <input class="blank" maxlength="60" aria-label="빈칸 입력">에게 전달하면 바뀔 수 있다</p>
     </div>
   </div>
 

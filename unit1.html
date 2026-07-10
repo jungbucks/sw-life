@@ -193,7 +193,7 @@ td.minus { color: var(--bad); font-weight: 700; }
 }
 .activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
 .activity p { font-size: 15.5px; margin: 4px 0; }
-.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+.activity .blank { display: inline-block; font-family: inherit; font-size: 15px; color: var(--ink); background: transparent; border: none; border-bottom: 2px solid var(--ua); min-width: 90px; width: 10em; max-width: 100%; padding: 2px 6px; text-align: center; } .activity .blank:focus { outline: none; background: #fff; border-radius: 6px 6px 0 0; }
 
 footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
 footer .series { font-weight: 800; color: var(--ua-dark); }
@@ -295,7 +295,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     <p>지금 사람이 하고 있는 "입력→처리→출력"을 찾으면, 그것이 <strong>소프트웨어가 대신하게 될 미래</strong>다. 운전(도로 상황 입력 → 판단 → 핸들 조작)이 자율주행이 됐듯이.</p>
     <div class="activity">
       <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
-      <p><span class="blank">&nbsp;일상의 한 장면&nbsp;</span>이 소프트웨어를 만나면 — 입력은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 처리는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 출력은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>이 될 것이다.</p>
+      <p><input class="blank" maxlength="60" placeholder="일상의 한 장면" aria-label="일상의 한 장면 입력">이 소프트웨어를 만나면 — 입력은 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 처리는 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 출력은 <input class="blank" maxlength="60" aria-label="빈칸 입력">이 될 것이다.</p>
       <p style="font-size:14px;color:var(--muted)">예: "급식 줄 서기"가 SW를 만나면 — 입력=오늘 식단과 학급 시간표, 처리=혼잡 예측, 출력=학급별 추천 배식 시간 알림</p>
     </div>
   </div>
@@ -324,7 +324,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     </div>
     <div class="activity">
       <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
-      <p>내 관심 분야 <span class="blank">&nbsp;&nbsp;&nbsp;</span>의 오래된 문제 하나 + 소프트웨어의 강점 <span class="blank">&nbsp;&nbsp;&nbsp;</span>를 조합하면 어떤 해결이 가능할까?</p>
+      <p>내 관심 분야 <input class="blank" maxlength="60" aria-label="빈칸 입력">의 오래된 문제 하나 + 소프트웨어의 강점 <input class="blank" maxlength="60" aria-label="빈칸 입력">를 조합하면 어떤 해결이 가능할까?</p>
     </div>
   </div>
 

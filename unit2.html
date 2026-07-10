@@ -211,7 +211,7 @@ tr:last-child td { border-bottom: none; }
 }
 .activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
 .activity p { font-size: 15.5px; margin: 4px 0; }
-.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+.activity .blank { display: inline-block; font-family: inherit; font-size: 15px; color: var(--ink); background: transparent; border: none; border-bottom: 2px solid var(--ua); min-width: 90px; width: 10em; max-width: 100%; padding: 2px 6px; text-align: center; } .activity .blank:focus { outline: none; background: #fff; border-radius: 6px 6px 0 0; }
 
 footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
 footer .series { font-weight: 800; color: var(--ua-dark); }
@@ -377,7 +377,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     </div>
     <div class="activity">
       <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
-      <p>내가 만들고 싶은 웨어러블: <span class="blank">&nbsp;&nbsp;&nbsp;</span> — 센서는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 액추에이터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 판단 규칙은 "<span class="blank">&nbsp;&nbsp;&nbsp;</span>이면 <span class="blank">&nbsp;&nbsp;&nbsp;</span>한다"</p>
+      <p>내가 만들고 싶은 웨어러블: <input class="blank" maxlength="60" aria-label="빈칸 입력"> — 센서는 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 액추에이터는 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 판단 규칙은 "<input class="blank" maxlength="60" aria-label="빈칸 입력">이면 <input class="blank" maxlength="60" aria-label="빈칸 입력">한다"</p>
     </div>
   </div>
 

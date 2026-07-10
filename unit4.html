@@ -164,7 +164,7 @@ tr:last-child td { border-bottom: none; }
 }
 .activity .a-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--ua-dark); margin-bottom: 6px; }
 .activity p { font-size: 15.5px; margin: 4px 0; }
-.activity .blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--ua); }
+.activity .blank { display: inline-block; font-family: inherit; font-size: 15px; color: var(--ink); background: transparent; border: none; border-bottom: 2px solid var(--ua); min-width: 90px; width: 10em; max-width: 100%; padding: 2px 6px; text-align: center; } .activity .blank:focus { outline: none; background: #fff; border-radius: 6px 6px 0 0; }
 
 footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 22px; }
 footer .series { font-weight: 800; color: var(--ua-dark); }
@@ -273,7 +273,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     </div>
     <div class="activity">
       <div class="a-label">✍️ 생각해 보기 (수업 활동)</div>
-      <p>우리 학교에서 시뮬레이션으로 미리 실험해 보고 싶은 것: <span class="blank">&nbsp;&nbsp;&nbsp;</span> (예: 축제 부스 배치에 따른 복도 혼잡도)</p>
+      <p>우리 학교에서 시뮬레이션으로 미리 실험해 보고 싶은 것: <input class="blank" maxlength="60" aria-label="빈칸 입력"> (예: 축제 부스 배치에 따른 복도 혼잡도)</p>
     </div>
   </div>
 
@@ -325,10 +325,10 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     <p class="lead">복잡한 현상도 <strong>개체·규칙·파라미터</strong> 세 줄로 요약하면 시뮬레이션 모델이 된다.</p>
     <div class="activity">
       <div class="a-label">✍️ 모델로 표현하기 (수업 활동)</div>
-      <p>현상 <span class="blank">&nbsp;&nbsp;&nbsp;</span>을(를) 시뮬레이션한다면 —</p>
-      <p>개체는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 규칙은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 바꿔 볼 파라미터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span></p>
-      <p>화면 구성: 무대에는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>을 보여주고, 상태 표시로 <span class="blank">&nbsp;&nbsp;&nbsp;</span>를 센다</p>
-      <p>기능(버튼): <span class="blank">&nbsp;&nbsp;&nbsp;</span> (예: 실행 / 계산대 1대↔2대 전환)</p>
+      <p>현상 <input class="blank" maxlength="60" aria-label="빈칸 입력">을(를) 시뮬레이션한다면 —</p>
+      <p>개체는 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 규칙은 <input class="blank" maxlength="60" aria-label="빈칸 입력">, 바꿔 볼 파라미터는 <input class="blank" maxlength="60" aria-label="빈칸 입력"></p>
+      <p>화면 구성: 무대에는 <input class="blank" maxlength="60" aria-label="빈칸 입력">을 보여주고, 상태 표시로 <input class="blank" maxlength="60" aria-label="빈칸 입력">를 센다</p>
+      <p>기능(버튼): <input class="blank" maxlength="60" aria-label="빈칸 입력"> (예: 실행 / 계산대 1대↔2대 전환)</p>
       <p style="font-size:14px;color:var(--muted)">예: 매점 대기줄 — 개체=학생, 규칙=계산 30초, 파라미터=계산대 수, 무대=줄 서는 모습, 상태 표시=평균 대기 시간</p>
     </div>
     <div class="tip"><span class="t">💡 구현 도구</span>
