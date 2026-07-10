@@ -242,6 +242,14 @@ details.acc .acc-body { padding: 4px 26px 26px; }
       <li><strong>시간</strong> — 한 칸씩 흐르며 규칙이 반복 적용된다</li>
       <li><strong>파라미터</strong> — 실험자가 바꿔 보는 조건 값 ("감염 확률을 낮추면?") — <mark>파라미터를 바꾸는 것이 곧 실험</mark>이다</li>
     </ul>
+    <h3>"프로그램"으로 보면 두 요소가 더 보인다</h3>
+    <p>시뮬레이션을 소프트웨어 제품으로 보면 모델(위 5요소) 바깥에 <strong>화면 구성</strong>과 <strong>구현 기능</strong>이 있다:</p>
+    <ul class="list">
+      <li><strong>화면 구성</strong> — 무대(세계가 보이는 곳) + 상태 표시(숫자·그래프) + 조작부(버튼·슬라이더)</li>
+      <li><strong>구현 기능</strong> — 실행/정지, 조건(파라미터) 바꾸기, 결과 확인·비교</li>
+    </ul>
+    <p style="font-size:14.5px;color:var(--muted)">아래 4-3 시뮬레이터에서 직접 확인해 보자 — 캔버스(무대), 카운터(상태 표시), 시나리오 버튼(조작부)이 그대로 있다.</p>
+
     <h3>왜 가치 있는가</h3>
     <ul class="list">
       <li>🛡️ <strong>위험 0</strong> — 추락해도, 충돌해도 안전</li>
@@ -319,7 +327,9 @@ details.acc .acc-body { padding: 4px 26px 26px; }
       <div class="a-label">✍️ 모델로 표현하기 (수업 활동)</div>
       <p>현상 <span class="blank">&nbsp;&nbsp;&nbsp;</span>을(를) 시뮬레이션한다면 —</p>
       <p>개체는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 규칙은 <span class="blank">&nbsp;&nbsp;&nbsp;</span>, 바꿔 볼 파라미터는 <span class="blank">&nbsp;&nbsp;&nbsp;</span></p>
-      <p style="font-size:14px;color:var(--muted)">예: 매점 대기줄 — 개체=학생, 규칙=줄 서서 계산에 30초, 파라미터=계산대 수(1대 vs 2대)</p>
+      <p>화면 구성: 무대에는 <span class="blank">&nbsp;&nbsp;&nbsp;</span>을 보여주고, 상태 표시로 <span class="blank">&nbsp;&nbsp;&nbsp;</span>를 센다</p>
+      <p>기능(버튼): <span class="blank">&nbsp;&nbsp;&nbsp;</span> (예: 실행 / 계산대 1대↔2대 전환)</p>
+      <p style="font-size:14px;color:var(--muted)">예: 매점 대기줄 — 개체=학생, 규칙=계산 30초, 파라미터=계산대 수, 무대=줄 서는 모습, 상태 표시=평균 대기 시간</p>
     </div>
     <div class="tip"><span class="t">💡 구현 도구</span>
       엔트리·스크래치의 복제본 기능, 파이썬의 반복문만 있어도 위 모델을 구현할 수 있다(4-3도 결국 "점 80개 + 규칙 두 줄"이다). 모델 설계가 끝나면 구현은 생각보다 짧다.
