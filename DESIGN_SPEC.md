@@ -1,6 +1,6 @@
 # 소프트웨어와 생활 시리즈 — 공통 디자인 스펙
 
-> 5개 단원 페이지(unit1~5.html)의 고정 장치. 데이터 과학 시리즈(`C:\Users\정벅\data-science\DESIGN_SPEC.md`)의 형제 —
+> 5개 단원 페이지(unit1~5.html)의 고정 장치. 데이터 과학 시리즈(`D:\Works\data-science\DESIGN_SPEC.md`)의 형제 —
 > 컴포넌트 문법은 계승, 무드는 교체("차트의 세계" → "생활 속 메이커").
 > 단일 HTML · 오프라인 더블클릭 · CDN/웹폰트/이미지 0 · 순수 HTML/CSS/JS.
 
