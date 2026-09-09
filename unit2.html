@@ -248,6 +248,12 @@ details.acc .acc-body { padding: 4px 26px 26px; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .spark { display: none; }
 }
+/* 작은 화면에서는 장식을 상단 띠에 모아 본문과 분리한다. */
+@media(max-width:520px){
+ header::before{bottom:auto;height:44px}
+ header h1{word-break:keep-all;overflow-wrap:break-word;line-height:1.4}
+ header .sub{word-break:keep-all}
+}
 </style>
 </head>
 <body>

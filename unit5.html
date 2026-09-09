@@ -186,6 +186,12 @@ details.acc .acc-body { padding: 4px 26px 26px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+/* 작은 화면에서는 장식을 상단 띠에 모아 본문과 분리한다. */
+@media(max-width:520px){
+ header::before{bottom:auto;height:44px}
+ header h1{word-break:keep-all;overflow-wrap:break-word;line-height:1.4}
+ header .sub{word-break:keep-all}
+}
 </style>
 </head>
 <body>
@@ -293,7 +299,9 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     </div>
     <div class="btn-row">
       <button class="btn" id="copyBtn">📋 결과 요약 복사 (제출용)</button>
+      <button class="btn ghost" id="downloadBtn">요약 파일 내려받기</button>
     </div>
+    <div class="ws"><label for="summaryPreview">제출 요약 미리보기 · 입력하면 자동 갱신됩니다</label><textarea id="summaryPreview" readonly rows="12" spellcheck="false"></textarea></div>
     <div class="demo-note" id="copyNote">5-2~5-4의 ✍️ 칸을 채운 뒤 누르면 제출용 텍스트가 클립보드에 담긴다. 패들렛·구글 문서에 붙여넣어 제출!</div>
   </div>
 
@@ -337,6 +345,17 @@ details.acc .acc-body { padding: 4px 26px 26px; }
       '작성일: ' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()),
     ].join('\n');
   }
+  const preview = document.getElementById('summaryPreview');
+  function refreshPreview() { preview.value = buildText(); }
+  document.querySelectorAll('.ws input, .ws textarea:not(#summaryPreview)').forEach(el => el.addEventListener('input', refreshPreview));
+  refreshPreview();
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    refreshPreview();
+    const url = URL.createObjectURL(new Blob(['\uFEFF' + preview.value], { type: 'text/plain;charset=utf-8' }));
+    const a = document.createElement('a'); a.href = url; a.download = '소프트웨어_프로젝트_요약.txt';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    note.textContent = '요약 파일을 내려받았습니다. 제출하거나 다음 시간에 참고하세요.';
+  });
   function fallbackCopy(t) {
     const ta = document.createElement('textarea');
     ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
@@ -346,11 +365,12 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     ta.remove(); return ok;
   }
   btn.addEventListener('click', () => {
-    const txt = buildText();
+    refreshPreview();
+    const txt = preview.value;
     const done = ok => {
       note.innerHTML = ok
         ? '✅ <b>복사 완료!</b> 붙여넣어 제출하자. (미작성 칸은 "(미작성)"으로 표시 — 채우고 다시 복사해도 된다)'
-        : '❌ 복사 실패 — 내용을 직접 드래그해 복사하자.';
+        : '❌ 복사 실패 — 위 요약 미리보기에서 직접 선택해 복사하거나 요약 파일을 내려받으세요.';
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(txt).then(() => done(true), () => done(fallbackCopy(txt)));
