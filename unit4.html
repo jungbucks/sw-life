@@ -458,16 +458,18 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     b.addEventListener('click', () => {
       scn = Number(b.dataset.scn);
       document.querySelectorAll('.scn-btn').forEach(x => x.classList.toggle('on', x === b));
-      if (!running) { init(SCN[scn]); document.getElementById('simNote').innerHTML = SCN[scn].name + ' 준비 완료 — ▶ 실행!'; }
+      if (running) startSimulation();
+      else { init(SCN[scn]); document.getElementById('simNote').innerHTML = SCN[scn].name + ' 준비 완료 — ▶ 실행!'; }
     });
   });
-  document.getElementById('simRun').addEventListener('click', () => {
+  function startSimulation() {
     if (rafId) cancelAnimationFrame(rafId);
     init(SCN[scn]);
     running = true;
     document.getElementById('simNote').innerHTML = '🦠 <b>' + SCN[scn].name + '</b> 실행 중… 로즈색 감염이 어떻게 퍼지는지, 피크가 몇에서 멈추는지 지켜보자.';
     rafId = requestAnimationFrame(loop);
-  });
+  }
+  document.getElementById('simRun').addEventListener('click', startSimulation);
 
   init(SCN[0]); // 초기 화면
 })();

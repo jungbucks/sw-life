@@ -458,12 +458,16 @@ details.acc .acc-body { padding: 4px 26px 26px; }
     });
   }
   makePal('missionPal', MISSIONS.map(m => m.name), i => { mission = i; resetFlow(); });
-  makePal('sensorPal', SENSORS, i => { sensor = SENSORS[i]; });
-  makePal('actPal', ACTS, i => { act = ACTS[i]; });
+  makePal('sensorPal', SENSORS, i => { sensor = SENSORS[i]; resetFlow(); });
+  makePal('actPal', ACTS, i => { act = ACTS[i]; resetFlow(); });
 
   const flow = document.getElementById('buildFlow');
   const note = document.getElementById('buildNote');
-  function resetFlow() { flow.classList.remove('show', 'good', 'bad-c'); }
+  function resetFlow() {
+    flow.classList.remove('show', 'good', 'bad-c');
+    flow.replaceChildren();
+    note.textContent = '선택이 바뀌었습니다. 조립 버튼을 눌러 다시 확인하세요.';
+  }
 
   document.getElementById('buildBtn').addEventListener('click', () => {
     if (mission === null) { note.innerHTML = '⚠️ 먼저 <b>미션</b>을 골라 주세요!'; return; }
