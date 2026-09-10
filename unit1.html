@@ -235,6 +235,12 @@ details.acc .acc-body { padding: 4px 26px 26px; }
  header h1{word-break:keep-all;overflow-wrap:break-word;line-height:1.4}
  header .sub{word-break:keep-all}
 }
+#without-sw .fusion-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+#without-sw .fusion p, #without-sw summary, #without-sw .record-note { font-size: 15px; }
+#without-sw details { margin-top: 12px; }
+#without-sw summary { cursor: pointer; color: var(--ua-dark); font-weight: 700; }
+#without-sw textarea { display: block; width: 100%; padding: 12px; margin: 8px 0; font: inherit; color: var(--ink); background: white; border: 1px solid var(--line); border-radius: 10px; resize: vertical; }
+#without-sw .record-note { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -247,6 +253,7 @@ details.acc .acc-body { padding: 4px 26px 26px; }
 
 <nav class="toc">
   <a href="#c1">1-1 SW가 바꾼 세상</a>
+  <a href="#without-sw">활동 SW가 없다면?</a>
   <a href="#c2">1-2 SW의 관점으로 보기</a>
   <a href="#c3">1-3 융합의 힘</a>
   <a href="#quiz">📝 퀴즈</a>
@@ -279,6 +286,26 @@ details.acc .acc-body { padding: 4px 26px 26px; }
       어떤 소프트웨어든 <strong>"누가 편해졌고, 누가 어려워졌는가?"</strong>를 물어보라. 이 한 질문이 사례 나열을 <mark>사회 변화 분석</mark>으로 바꿔 준다.
     </div>
   </div>
+
+  <section class="card" id="without-sw" aria-labelledby="withoutTitle">
+    <h2 id="withoutTitle"><span class="chip">활동</span> 이 소프트웨어가 없다면? 🔌</h2>
+    <p class="lead">매일 쓰던 서비스 하나가 일주일 동안 사라진다면, 우리의 하루는 어떻게 달라질까?</p>
+    <p><strong>아래 사례 중 하나를 골라</strong> 불편 → 대안 → 달라진 생활을 짝과 비교해 보자. 해당 서비스를 쓰지 않아도 제시된 상황을 바탕으로 참여할 수 있다.</p>
+    <div class="fusion-grid">
+      <div class="fusion"><div class="f-ico">💸</div><h4>간편 송금 서비스</h4><p>친구들과 간식값을 나누어 내야 한다. 간편 송금이 없다면 돈을 어떻게 모을까?</p><details><summary>생각의 실마리</summary><p>현금이나 은행 이체로 대신할 수 있을까? 누가 냈는지 확인하는 시간과 현금을 준비하는 수고는 어떻게 달라질까?</p></details></div>
+      <div class="fusion"><div class="f-ico">💬</div><h4>카카오톡</h4><p>모둠 발표 시간을 바꾸고 자료를 나눠야 한다. 단체 대화방이 없다면 모두에게 어떻게 알릴까?</p><details><summary>생각의 실마리</summary><p>전화·문자·직접 만나기로 대신해 보자. 연락이 빠진 사람은 없을까? 반대로 답장을 서둘러야 한다는 부담은 줄어들까?</p></details></div>
+      <div class="fusion"><div class="f-ico">📷</div><h4>인스타그램</h4><p>학교 축제 소식을 사진으로 알리고 친구들의 근황을 보고 싶다. 이 서비스가 없다면 어떻게 할까?</p><details><summary>생각의 실마리</summary><p>학교 게시판이나 다른 소통 수단을 쓸 수 있을까? 소식이 닿는 범위, 추천으로 발견하는 정보, 다른 사람과 비교하는 마음은 어떻게 달라질까?</p></details></div>
+    </div>
+    <div class="tip"><span class="t">두 조건을 구분해 보자</span><strong>특정 앱만 사라지면</strong> 비슷한 앱으로 옮길 수 있다. 이번에는 한 걸음 더 나아가 <strong>그 기능을 하는 서비스도 없다면</strong> 어떤 방식으로 대신할지 생각해 보자. 간편 송금은 없지만 은행 이체는 가능한 상황처럼, 팀이 정한 조건을 먼저 밝힌다.</div>
+    <div class="activity">
+      <div class="a-label">✍️ 우리 모둠의 ‘없는 하루’ 기록</div>
+      <p>선택한 서비스와 가정 → 가장 불편한 장면 → 대신할 방법 → 추가로 드는 시간·노력 → 줄어들 수도 있는 부담 순서로 적자.</p>
+      <label for="withoutRecord">우리 모둠의 분석</label>
+      <textarea id="withoutRecord" rows="6" maxlength="1500" placeholder="서비스와 가정: …&#10;불편한 장면과 영향을 받는 사람: …&#10;대안과 추가로 드는 수고: …&#10;줄어들 수도 있는 부담: …&#10;그래서 이 SW가 바꾼 생활은: …"></textarea>
+      <p class="record-note">입력은 저장되지 않는다. 활동을 마치면 기록을 선택해 복사하거나 공책에 옮겨 두자.</p>
+    </div>
+    <p><strong>마지막 질문:</strong> 이 서비스가 있어도 이용하기 어려운 사람은 누구일까? 그 사람까지 편해지려면 무엇을 바꾸면 좋을까?</p>
+  </section>
 
   <!-- ═══════════ 1-2 SW의 관점 ═══════════ -->
   <div class="card" id="c2">
